@@ -104,9 +104,9 @@ Matriz<T> dameColumna(Matriz<T>& A, int numero){
 template<class T> 
 void deflacionar(Matriz<T>& A, Matriz<T>& autos, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	Matriz<T> vt = dameColumna(A, numero);
-	Matriz<T> v = vt;
-	v.transponer();
+	Matriz<T> v = dameColumna(A, numero);
+	Matriz<T> vt = v;
+	vt.transponer();
 	Matriz<T> prod = v*vt;
 	prod*(-autos[cantFilas][numero]);
 	A + (prod);

@@ -85,6 +85,7 @@ int main(int argc, char **argv)
 	Matriz<double> At = A;
 	At.transponer();
 	Matriz<double> P = A*At;
+	calcularAuto(P, data.componentes);
 
 	
 	// TO DO:
