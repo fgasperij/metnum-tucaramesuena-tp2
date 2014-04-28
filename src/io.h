@@ -131,8 +131,8 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 }
 
 
-//Lee el resto
-void leerDatosTests(const char*  file, Data& data, Test& test, int imagen){
+//Lee los tests
+void leerDatosTests(const char*  file, Data& data, Test& test, int imagen, char * buffer){
 ifstream file_s; file_s.open(file);
 
 	// Ignoro todo hasta llegar a la linea a testear.
@@ -142,6 +142,9 @@ ifstream file_s; file_s.open(file);
 	int long_test = contarCaracteres(file_s);
 	test.imagen = new char [long_test];
 	obtenerHastaCaracter(file_s, test.imagen, ESPACIO);
+	
+	//La copio al buffer.
+	leerPGM(test.imagen, data, buffer);
 
 	// Paso los datos a test.  
 	file_s >> test.sujeto;

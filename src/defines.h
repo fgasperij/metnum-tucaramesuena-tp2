@@ -70,6 +70,8 @@ struct Test{
 
 #define GRAYSCALE 255
 
+#define PITER 50
+
 
 const char pgm[5] = ".pgm";
 const int long_pgm = 4;

@@ -130,21 +130,28 @@ class Matriz{
 		}
 
 		T calcularProducto(Matriz<T>& A, Matriz<T>& B,int i,int j){
-			if(A.cantColumnas() != B.cantFilas()){cerr << "Error: Tamaño no coincidente para el producto interno" << endl; return;}
+			if(A.cantColumnas() != B.cantFilas()){cerr << "Error: Tamaño no coincidente para el producto interno" << endl; return 0;}
 			T acum = 0;
 			for(int k = 0; k < A.cantColumnas(); k++){
 				acum += A[i][k]*B[k][j];
 			}
+			return acum;
 		}
 
-		void operator*(Matriz<T>& B){
-			if(this->cantColumnas() != B.cantFilas()){cerr << "Error: Tamaño no coincidente para el producto" << endl; return;}
+
+
+		Matriz<T> operator*(Matriz<T>& B){
+			if(this->cantColumnas() != B.cantFilas()){cerr << "Error: Tamaño no coincidente para el producto" << endl; return (Matriz<T> (0,0));}
+			Matriz<T> res (this->cantFilas(), B.cantColumnas());
 			for(int i = 0; i < this->cantFilas();i++){
-				for(int j = 0; j < this->cantColumnas(); j++){
-					(*this)[i][j] = calcularProducto(*this,B,i,j);
+				for(int j = 0; j < B.cantColumnas(); j++){
+					res[i][j] = calcularProducto(*this,B,i,j);
 				}
 			}
+			return res;
 		}
+
+
 
 		void operator*(T valor){
 			for(int i = 0; i < this->cantFilas();i++){
@@ -164,9 +171,18 @@ class Matriz{
 			//this->sumando = valor;
 		}
 
+		void transponer(){	
+			this->transpuesta = !(this->transpuesta);
+		}
 
-		int cantFilas()const {return matriz.size();}
-		int cantColumnas()const {return matriz[0].size();}
+		int cantFilas()const {
+			if(transpuesta){return matriz[0].size();}
+			return matriz.size();
+		}
+		int cantColumnas()const {
+			if(transpuesta){return matriz.size();}
+			return matriz[0].size();
+		}
 };
 
 #endif

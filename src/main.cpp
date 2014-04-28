@@ -81,7 +81,10 @@ int main(int argc, char **argv)
 	}
 
 	// Armo A del enunciado.
-	armarMatrizA(A);
+	double media = armarMatrizA(A);
+	Matriz<double> At = A;
+	At.transponer();
+	Matriz<double> P = A*At;
 
 	
 	// TO DO:
@@ -94,13 +97,21 @@ int main(int argc, char **argv)
 	// Aplicar TC a imágenes para clasificar - Método de clasificación
 
 
-	// Identificacion caras
+	// TODO: Aplicar transformacion caracteristica a toda las muestras.
+
 	for(int i = 0; i < data.tests; i++){
 		Test test;
-		leerDatosTests(file_in, data, test, i);
+		leerDatosTests(file_in, data, test, i, buffer);
+		Matriz<double> IMG (1, m);
+		cargarMatriz(IMG, buffer);
+		IMG + (-media);
+		IMG * sqrt(n-1);
+		// TODO: Aplicar trans. caract a la imagen.
+
 		// IDENTIFICAR SUJETO;
 		//if(result = test.sujeto) = BIEN IDENTIFICADO
 		//else = SEGUI PARTICIPANDO
+
 		limpiarTest(test);
 	}
 	
