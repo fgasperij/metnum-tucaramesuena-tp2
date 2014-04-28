@@ -6,9 +6,16 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <cstdlib>
 //#include <math.h>
 #include "defines.h"
 #include "util.h"
+#include "Matriz.h"
+#include "io.h"
+#include "misc.h"
+#include "display.h"
+#include "time.h"
 
 int main(int argc, char **argv)
 {
@@ -50,25 +57,52 @@ int main(int argc, char **argv)
 
 /*** Face Recognition ***/
 
-	/** Cargamos el train-set descripto en el archivo de entrada **/		
-	trainset ts; 
-	input>>ts.path;
-	input>>ts.alto;
-	input>>ts.ancho;
-	input>>ts.p;
-	input>>ts.nimgp;
-	input>>ts.k;
-	ts.show_info();
+		
+	char* file_in = argv[1]; char* file_out = argv[2];
+
+	Data data;
+	leerDatosBasicos(file_in, data);
+	int n = data.personas*data.imagenes;
+	int m = data.alto*data.ancho;
+	Matriz<double> A (n, m);
+	int count = 0;
+
+	// Buffer con new, el tamaño del buffer no cambia una vez calculado el tamanio.
+	char * buffer = new char [m];
+	if(buffer == NULL){cerr << "Punteo del buffer nulo " << endl; return -1;}
+
+	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
+	for(int i = 0; i < data.personas; i++){
+		for(int j = 0; j < data.imagenes; j++){
+			leerDatosAvanzados(file_in, data, i, j, buffer);
+			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras
+			count++;
+		}
+	}
+
+	// Armo A del enunciado.
+	armarMatrizA(A);
+
 	
 	// TO DO:
 	
-	// Aquí hay que parsear las imágenes armando la matriz A
 
 	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)
 	
 	// Calcular Transformación Característica (TC)
 	
 	// Aplicar TC a imágenes para clasificar - Método de clasificación
+
+
+	// Identificacion caras
+	for(int i = 0; i < data.tests; i++){
+		Test test;
+		leerDatosTests(file_in, data, test, i);
+		// IDENTIFICAR SUJETO;
+		//if(result = test.sujeto) = BIEN IDENTIFICADO
+		//else = SEGUI PARTICIPANDO
+		limpiarTest(test);
+	}
 	
 	msg_footer();
 	return 0;

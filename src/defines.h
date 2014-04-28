@@ -1,7 +1,11 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
+#include <vector>
 
+using namespace std;
+
+typedef vector<int> Pos;
 
 /** Para medir tiempo de ejecución **/
 #define TIMER(var) clock_gettime(CLOCK_REALTIME, &var); 
@@ -24,26 +28,51 @@
 
 
 /** Parámetros de las imágenes de un mismo conjunto de entrenamiento **/
-struct trainset{
-    std::string path;
+struct Data{
+    char* base;	//Directorio de la base de datos.
     int alto;
     int ancho;
-    int p;
-    int nimgp;
-    int k;
+    int personas;
+    int imagenes;
+    int componentes;
+    int tests;
     
     void show_info(){
-		std::cout<<YELLOW;
-		std::cout << "\n -- Info del Conjunto de Entrenamiento --";
-		std::cout << "\n PATH:\t"<< path;
-		std::cout << "\n ALTO:\t" << alto;
-		std::cout << "\n ANCHO:\t" << ancho;
-		std::cout << "\n p:\t" << p;
-		std::cout << "\n nimgp:\t" << nimgp;
-		std::cout << "\n k:\t" << k << std::endl;
-		std::cout<<ENDCOLOR;
+		cout<<YELLOW;
+		cout << "\n -- Info del Conjunto de Entrenamiento --";
+		cout << "\n PATH:\t"<< base;
+		cout << "\n ALTO:\t" << alto;
+		cout << "\n ANCHO:\t" << ancho;
+		cout << "\n p:\t" << personas;
+		cout << "\n nimgp:\t" << imagenes;
+		cout << "\n tests:\t" << tests;
+		cout << "\n k:\t" << componentes << endl;
+		cout<<ENDCOLOR;
 	}
 };
+
+struct Test{
+	int sujeto;
+	char* imagen;
+};
+
+
+#define PRECISION 6
+
+#define VERT 0
+#define HORIZ 1
+
+#define FILA 0
+#define COLUMNA 1
+
+#define ENTER '\n'
+#define ESPACIO ' '
+
+#define GRAYSCALE 255
+
+
+const char pgm[5] = ".pgm";
+const int long_pgm = 4;
 
 
 #endif
