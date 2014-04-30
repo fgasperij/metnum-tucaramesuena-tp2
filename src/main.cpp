@@ -101,6 +101,8 @@ int main(int argc, char **argv)
 	
 	// Entrada/Salida -- IMPLEMENTADO
 
+	// Armado de matriz -- IMPLEMENTADO - EN PRUEBAS
+
 	// Metodo Potencia y Deflacion --- IMPLEMENTADO - EN PRUEBAS
 	
 	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO
