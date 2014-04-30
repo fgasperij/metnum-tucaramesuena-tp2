@@ -5,6 +5,13 @@
 
 #include "Matriz.h"
 #include "defines.h"
+#include <utility>
+
+template<class T>
+struct Autos{
+	Matriz<T> autovectores;
+	Matriz<T> autovalores;
+};
 
 // Funciones miscelaneas.
 
@@ -15,6 +22,7 @@ int cantColumnas = A.cantColumnas();
 		A[fila][j] = buffer[j];
 	}
 }
+
 
 template<class T>
 T calcularMedia(Matriz<T>& A, int columna){
@@ -27,13 +35,13 @@ T calcularMedia(Matriz<T>& A, int columna){
 }
 
 template<class T> 
-T armarMatrizA(Matriz<T>& A){
+Matriz<T> armarMatrizA(Matriz<T>& A){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	T media;
+	Matriz<T> media (1, cantColumnas);
 	for(int j = 0; j < cantColumnas; j++){
-		media = calcularMedia(A, j);
+		media[0][j] = calcularMedia(A, j);
 		for(int i = 0; i < cantFilas; i++){
-			A[i][j] = (A[i][j] - media) / ( (T) cantFilas);
+			A[i][j] = (A[i][j] - A[0][j]) / ( (T) cantFilas);
 		}
 	}
 	A * (1/sqrt( (T) cantFilas - 1));
@@ -60,10 +68,9 @@ T calcularNorma(Matriz<T>& v){
 	return sqrt(acum);
 }
 
-// Implementacion fea
-// autos[1..n-1][numero] = autovector y autovalor en autos[n][numero]
+
 template<class T> 
-void metoPotencia(Matriz<T>& A, Matriz<T>& autos, int numero){
+void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T> autovalores, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	Matriz<T> v (cantFilas, 1, 1); // = ???? RANDOM?
 	for(int i = 0; i < PITER; i++){
@@ -72,13 +79,13 @@ void metoPotencia(Matriz<T>& A, Matriz<T>& autos, int numero){
 	}
 
 	for(int i = 0; i < cantFilas; i++){
-		autos[i][numero] = v[i][0];
+		autovectores[i][numero] = v[i][0];
 	}
 	Matriz<T> vt = v;
 	vt.transponer();
 	T landa = (vt*A*v)[0][0]; 
 	landa = landa * (1/((vt*v)[0][0]));
-	autos[cantFilas][numero] = landa;
+	autovalores[0][numero] = landa;
 }
 
 template<class T> 
@@ -102,25 +109,62 @@ Matriz<T> dameColumna(Matriz<T>& A, int numero){
 }
 
 template<class T> 
-void deflacionar(Matriz<T>& A, Matriz<T>& autos, int numero){
+void deflacionar(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T>& autovalores, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	Matriz<T> v = dameColumna(A, numero);
+	Matriz<T> v = dameColumna(autovectores, numero);
 	Matriz<T> vt = v;
 	vt.transponer();
 	Matriz<T> prod = v*vt;
-	prod*(-autos[cantFilas][numero]);
+	prod*(-autovalores[0][numero]);
 	A + (prod);
 }
 
 template<class T> 
-Matriz<T> calcularAuto(Matriz<T>& A, int componentes){
+Autos<T> calcularAuto(Matriz<T>& A, int componentes){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	Matriz<T> autos (cantFilas+1, componentes);
+	
+	Autos<T> autos;
+	autos.autovectores = Matriz<T> (cantFilas, componentes);
+	autos.autovalores = Matriz<T> (1, componentes);
 	for(int i = 0; i < componentes; i++){
-		metoPotencia(A, autos, i);
-		deflacionar(A, autos, i);
+		metoPotencia(A, autos.autovectores, autos.autovalores, i);
+		deflacionar(A, autos.autovectores, autos.autovalores, i);
 	}
 	return autos;
+}
+
+template<class T>
+T dameCoordenada(Matriz<T>& A, Matriz<T>& autovectores, int fila, int coord){
+	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
+	int acum = 0;
+	for(int i = 0; i < cantColumnas; i++){
+		acum += autovectores[coord][i]*A[fila][i];
+	}
+	return acum;
+	
+}
+
+template<class T>
+void aplicarTC(Matriz<T>& A, Matriz<T>& res, Matriz<T>& autovectores, int fila){
+	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
+	int componentes = autovectores.cantFilas();
+	for(int i = 0; i < componentes; i++){
+		res[fila][i] = dameCoordenada(A, autovectores, fila, i);
+	}
+}
+
+
+template<class T>
+Matriz<T> transfCaract(Matriz<T>& A, Matriz<T>& autovectores){
+	autovectores.transponer();
+	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
+	int componentes = autovectores.cantFilas();
+	Matriz<T> res (cantFilas, componentes);
+	for(int i = 0; i < cantFilas; i++){
+		aplicarTC(A, res, autovectores, i);
+	}
+	autovectores.transponer();
+	return res;
 }
 
 // Cargo una matriz

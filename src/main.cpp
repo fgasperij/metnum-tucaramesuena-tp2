@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 /*** Face Recognition ***/
 
 		
+
 	char* file_in = argv[1]; char* file_out = argv[2];
 
 	Data data;
@@ -71,6 +72,7 @@ int main(int argc, char **argv)
 	char * buffer = new char [m];
 	if(buffer == NULL){cerr << "Punteo del buffer nulo " << endl; return -1;}
 
+
 	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
 	for(int i = 0; i < data.personas; i++){
 		for(int j = 0; j < data.imagenes; j++){
@@ -81,40 +83,59 @@ int main(int argc, char **argv)
 	}
 
 	// Armo A del enunciado.
-	double media = armarMatrizA(A);
+	Matriz<double> media = armarMatrizA(A);
+	// At = A'
 	Matriz<double> At = A;
 	At.transponer();
-	Matriz<double> P = A*At;
-	calcularAuto(P, data.componentes);
+	// P = A'*A
+	Matriz<double> P = At*A;
+	// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
+	Autos<double> autos = calcularAuto(P, data.componentes);
 
-	
-	// TO DO:
-	
-
-	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)
-	
-	// Calcular Transformación Característica (TC)
-	
-	// Aplicar TC a imágenes para clasificar - Método de clasificación
+	// Aplico transfo caracteristica a todas las muestras.
+	Matriz<double> TC = transfCaract(A, autos.autovectores);
 
 
-	// TODO: Aplicar transformacion caracteristica a toda las muestras.
+	
+	// ESTADO ACTUAL:
+	
+	// Entrada/Salida -- IMPLEMENTADO
+
+	// Metodo Potencia y Deflacion --- IMPLEMENTADO - EN PRUEBAS
+	
+	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO
+	
+	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - EN PRUEBAS
+	
+	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - EN PRUEBAS
+
+	// Identificar sujetos --- SIN IMPLEMENTAR
+	
+	// Metodo alternativo -- SIN IMPLEMENTAR
+
 
 	for(int i = 0; i < data.tests; i++){
+
 		Test test;
+		// Vectorizo la imagen
 		leerDatosTests(file_in, data, test, i, buffer);
 		Matriz<double> IMG (1, m);
 		cargarMatriz(IMG, buffer);
-		IMG + (-media);
+		// Calculo algunas cosas...
+		media * (-1);
+		IMG + media;
 		IMG * sqrt(n-1);
-		// TODO: Aplicar trans. caract a la imagen.
+		// Aplico transformacion caracteristica a la imagen.
+		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
 		// IDENTIFICAR SUJETO;
-		//if(result = test.sujeto) = BIEN IDENTIFICADO
+		//if(result == test.sujeto) = BIEN IDENTIFICADO
 		//else = SEGUI PARTICIPANDO
 
 		limpiarTest(test);
 	}
+
+
 	
 	msg_footer();
 	return 0;

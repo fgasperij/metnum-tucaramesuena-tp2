@@ -50,6 +50,9 @@ class Matriz{
 			friend class Matriz;
 			public:
 			T& operator[](int j){
+				if( matriz_padre->cantColumnas()-1 < j){cerr << "La cantidad de columnas es: " << matriz_padre->cantColumnas() << " , el valor: " << j << " no es válido."; 
+					return (matriz_padre->matriz[0][0]);
+				}
 				if(matriz_padre->transpuesta){
 					return matriz_padre->matriz[matriz_padre->posiciones_x[j]][matriz_padre->posiciones_y[i]];
 					//return (matriz_padre->escalar * matriz_padre->matriz[matriz_padre->posiciones_x[j]][matriz_padre->posiciones_y[i]] + matriz_padre->sumando);
@@ -117,6 +120,7 @@ class Matriz{
 
 		// Devuelve un tipo de vector en Matriz.
 		vectorMatriz operator[](int i){
+			if( this->cantFilas()-1 < i){cerr << "La cantidad de filas es: " << this->cantFilas() << " , el valor: " << i << " no es válido."; return vectorMatriz(this, 0);}
 			return vectorMatriz(this, i);
 		}
 
