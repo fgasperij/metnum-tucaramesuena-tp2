@@ -19,7 +19,7 @@ template<class T>
 void armarMatrizX(Matriz<T>& A, char * buffer, int fila){
 int cantColumnas = A.cantColumnas();
 	for(int j = 0; j < cantColumnas; j++){
-		A[fila][j] = buffer[j];
+		A[fila][j] = (unsigned char) buffer[j];
 	}
 }
 
@@ -31,7 +31,7 @@ T calcularMedia(Matriz<T>& A, int columna){
 	for(int i = 0; i < cantFilas; i++){
 		suma += A[i][columna];
 	}
-	return suma;
+	return suma / cantFilas;
 }
 
 template<class T> 
@@ -41,10 +41,10 @@ Matriz<T> armarMatrizA(Matriz<T>& A){
 	for(int j = 0; j < cantColumnas; j++){
 		media[0][j] = calcularMedia(A, j);
 		for(int i = 0; i < cantFilas; i++){
-			A[i][j] = (A[i][j] - A[0][j]) / ( (T) cantFilas);
+			A[i][j] = (A[i][j] - media[0][j]) / ( (T) cantFilas);
 		}
 	}
-	A * (1/sqrt( (T) cantFilas - 1));
+	A * (1/sqrt( cantFilas - 1));
 	return media;
 }
 

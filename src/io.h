@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <chrono>
+#include "Matriz.h"
 
 char trashc;
 short trashs;
@@ -131,7 +132,7 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 }
 
 
-//Lee los tests
+//Lee el resto
 void leerDatosTests(const char*  file, Data& data, Test& test, int imagen, char * buffer){
 ifstream file_s; file_s.open(file);
 
@@ -170,10 +171,16 @@ void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 
 template<class T>
 void escribirMatriz(const char*  file, Matriz<T>& A){
-	int cantFilas = A.cantFilas();
+	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
+	ofstream file_s; file_s.open(file);
 	for(int i = 0; i < cantFilas; i++){
-	escribirVector(file, A[i], HORIZ);
+		for(int j = 0; j < cantColumnas; j++){
+		    file_s << A[i][j];
+		    if(j != cantColumnas - 1 ){file_s << " ";}
+		}
+		if(i != cantFilas - 1 ){file_s << endl;}
 	}
+	file_s.close();
 }
 
 template<class T>
@@ -181,7 +188,7 @@ void leerVector(const char*  file, vector<T>& b){
 	ifstream file_s; file_s.open(file);
 	int tamanio = b.size();
 	for(int i = 0; i < tamanio; i++){
-	file_s >> b[i];
+		file_s >> b[i];
 	}
 	file_s.close();
 }
@@ -192,10 +199,10 @@ void leerMatriz(const char*  file, Matriz<T>& A){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	ifstream file_s; file_s.open(file);
 	for(int i = 0; i < cantFilas; i++){
-	for(int j = 0; j < cantColumnas; j++){
-	    file_s >> A[i][j];
-	}
-	file_s.get();
+		for(int j = 0; j < cantColumnas; j++){
+		    file_s >> A[i][j];
+		}
+		file_s.get();
 	}
 	file_s.close();
 }
