@@ -41,7 +41,7 @@ Matriz<T> armarMatrizA(Matriz<T>& A){
 	for(int j = 0; j < cantColumnas; j++){
 		media[0][j] = calcularMedia(A, j);
 		for(int i = 0; i < cantFilas; i++){
-			A[i][j] = (A[i][j] - media[0][j]) / ( (T) cantFilas);
+			A[i][j] = A[i][j] - media[0][j];
 		}
 	}
 	A * (1/sqrt( cantFilas - 1));
