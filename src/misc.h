@@ -70,7 +70,7 @@ T calcularNorma(Matriz<T>& v){
 
 
 template<class T> 
-void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T> autovalores, int numero){
+void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T>& autovalores, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	Matriz<T> v (cantFilas, 1, 1); // = ???? RANDOM?
 	for(int i = 0; i < PITER; i++){
