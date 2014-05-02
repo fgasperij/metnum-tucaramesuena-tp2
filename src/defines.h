@@ -70,7 +70,7 @@ struct Test{
 
 #define GRAYSCALE 255
 
-#define PITER 50
+#define PITER 100
 
 
 const char pgm[5] = ".pgm";

@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
 	// Buffer con new, el tamaño del buffer no cambia una vez calculado el tamanio.
 	char * buffer = new char [m];
-	if(buffer == NULL){cerr << "Punteo del buffer nulo " << endl; return -1;}
+	if(buffer == NULL){cerr << "Puntero del buffer nulo " << endl; return -1;}
 
 
 	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
@@ -81,16 +81,19 @@ int main(int argc, char **argv)
 			count++;
 		}
 	}
-
 	// Armo A del enunciado.
 	Matriz<double> media = armarMatrizA(A);
+
 	// At = A'
 	Matriz<double> At = A;
 	At.transponer();
 	// P = A'*A
 	Matriz<double> P = At*A;
+	
+
 	// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
 	Autos<double> autos = calcularAuto(P, data.componentes);
+
 
 	// Aplico transfo caracteristica a todas las muestras.
 	Matriz<double> TC = transfCaract(A, autos.autovectores);
@@ -99,14 +102,14 @@ int main(int argc, char **argv)
 	
 	// ESTADO ACTUAL:
 	
-	// Entrada/Salida -- IMPLEMENTADO
+	// Entrada/Salida -- IMPLEMENTADO -- OK
 
-	// Armado de matriz -- IMPLEMENTADO - EN PRUEBAS
+	// Armado de matriz -- IMPLEMENTADO -- OK
 
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO - EN PRUEBAS -- Calcula bien el primer autovalor.
-	
-	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO
-	
+	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
+
+	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
+		
 	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - EN PRUEBAS
 	
 	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - EN PRUEBAS
@@ -137,6 +140,13 @@ int main(int argc, char **argv)
 		limpiarTest(test);
 	}
 
+	// Escribo los valores singulares en el archivo de salida.
+	Matriz<double> vs (data.componentes, 1);
+	for(int i = 0; i < vs.cantFilas(); i++){
+		vs[i][0] = sqrt(autos.autovalores[0][i]);
+	}
+
+	escribirMatriz(file_out, vs);
 
 	
 	msg_footer();

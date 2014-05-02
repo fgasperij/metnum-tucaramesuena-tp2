@@ -163,7 +163,7 @@ void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 	if(modo == VERT){
 	    file_s << endl;
 	}
-	if(i == tamanio-1 && modo == HORIZ){file_s << endl;}
+	if(i == tamanio-1 and modo == HORIZ){file_s << endl;}
 	else if(modo == HORIZ){file_s << " ";}
 	}
 	file_s.close();

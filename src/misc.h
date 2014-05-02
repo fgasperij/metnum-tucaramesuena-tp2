@@ -57,8 +57,8 @@ T calcularNorma(Matriz<T>& v){
 			acum += v[0][i]*v[0][i];
 		}
 	}
-	if(cantColumnas == 1){
-		for(int i = 0; i < cantColumnas; i++){
+	else if(cantColumnas == 1){
+		for(int i = 0; i < cantFilas; i++){
 			acum += v[i][0]*v[i][0];
 		}
 	}
@@ -81,6 +81,7 @@ void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T>& autovalores,
 	for(int i = 0; i < cantFilas; i++){
 		autovectores[i][numero] = v[i][0];
 	}
+
 	Matriz<T> vt = v;
 	vt.transponer();
 	T landa = (vt*A*v)[0][0]; 
@@ -102,7 +103,7 @@ template<class T>
 Matriz<T> dameColumna(Matriz<T>& A, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	Matriz<T> columna (cantFilas, 1);
-	for(int i = 0; i < cantColumnas; i++){
+	for(int i = 0; i < cantFilas; i++){
 		columna[i][0] = A[i][numero];
 	}
 	return columna;
