@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
 	// Armado de matriz -- IMPLEMENTADO - EN PRUEBAS
 
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO - EN PRUEBAS
+	// Metodo Potencia y Deflacion --- IMPLEMENTADO - EN PRUEBAS -- Calcula bien el primer autovalor.
 	
 	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO
 	
