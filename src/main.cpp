@@ -60,6 +60,7 @@ int main(int argc, char **argv)
 		
 
 	char* file_in = argv[1]; char* file_out = argv[2];
+	int met = atoi(argv[3]);
 
 	Data data;
 	leerDatosBasicos(file_in, data);
@@ -84,19 +85,35 @@ int main(int argc, char **argv)
 	// Armo A del enunciado.
 	Matriz<double> media = armarMatrizA(A);
 
-	// At = A'
-	Matriz<double> At = A;
-	At.transponer();
-	// P = A'*A
-	Matriz<double> P = At*A;
+	Autos<double> autos;
+	if(met == 0){
+		// At = A'
+		Matriz<double> At = A;
+		At.transponer();
+		// P = A'*A
+		Matriz<double> P = At*A;
+
+		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
+		autos = calcularAuto(P, data.componentes);
+	}
+	else{
+		// At = A'
+		Matriz<double> At = A;
+		At.transponer();
+		// P = A'*A
+		Matriz<double> P = A*At;
 	
-
-	// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
-	Autos<double> autos = calcularAuto(P, data.componentes);
-
-
-	// Aplico transfo caracteristica a todas las muestras.
-	Matriz<double> TC = transfCaract(A, autos.autovectores);
+		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
+		// En el metodo alternativo hay que hacer un par de cuentas para hallas los autovectores. Los autovalores son los mismos.
+		autos = calcularAuto(P, data.componentes);
+		autos.autovectores = At*autos.autovectores;
+		for(int j = 0; j < data.componentes; j++){
+			double landa = autos.autovalores[0][j];
+			for(int i = 0; i < m; i++){
+				autos.autovectores[i][j] = autos.autovectores[i][j]*(sqrt(landa)/landa);
+			}
+		}
+	}
 
 
 	
@@ -109,14 +126,14 @@ int main(int argc, char **argv)
 	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
 
 	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
+
+	// Metodo alternativo -- IMPLEMENTADO -- OK
 		
 	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - EN PRUEBAS
 	
 	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - EN PRUEBAS
 
 	// Identificar sujetos --- SIN IMPLEMENTAR
-	
-	// Metodo alternativo -- SIN IMPLEMENTAR
 
 
 	for(int i = 0; i < data.tests; i++){

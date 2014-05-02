@@ -52,15 +52,34 @@ for j=1:m
 	end
 
 end
+
 res = res * (1/sqrt(n-1));
 
-%A'*A
-A = res'*res;
+% Metodo normal.
+if metodo == 0
+	A = res'*res;
 
-% Metodo potencia y deflacion.
-for i=1:comp
-	[avec,landa] = pim(x,A, iter);
-	vec(i,:) =  avec';
-	val(i,:) = landa;
-	A = def(A, avec, landa);
+	% Metodo potencia y deflacion.
+	for i=1:comp
+		[avec,landa] = pim(x,A, iter);
+		vec(i,:) =  avec';
+		val(i,:) = landa;
+		A = def(A, avec, landa);
+	end
+end
+
+% Metodo alternativo.
+if metodo == 1
+	A = res*res';
+
+	for i=1:comp
+		[avec,landa] = pim(y,A, iter);
+		pvec(i,:) =  avec';
+		val(i,:) = landa;
+		A = def(A, avec, landa);
+	end
+
+	for i=1:comp
+		vec(i,:) = (sqrt(val(i,:))/val(i,:))*res'*pvec(i,:)';
+	end
 end
