@@ -82,4 +82,7 @@ if metodo == 1
 	for i=1:comp
 		vec(i,:) = (sqrt(val(i,:))/val(i,:))*res'*pvec(i,:)';
 	end
+	for i=1:comp
+		val(i,:) = sqrt(val(i,:));
+	end
 end
