@@ -13,10 +13,11 @@ m = ancho*alto;
 n = imgs*pers;
 
 %Otros parametros
-iter = 100; % Cantidad de iteraciones para el metodo de potencias.
+iter = 300; % Cantidad de iteraciones para el metodo de potencias.
 x = ones(m,1); % Vector inicial para el metodo de la potencias.
+y = ones(n,1); %Idem superior pero para el metodo alternativo.
 
-res = zeros(n,m);
+X = zeros(n,m);
 path_base = strcat(path_root, path_base);
 for i=1:pers
 	path = path_base;
@@ -27,62 +28,60 @@ for i=1:pers
 		path_img = strcat(path_img,int2str(j));
 		path_img = strcat(path_img,'.pgm');
 		A = imread(path_img);
-%% Vectorizar, Hacer esto de forma mas MATLAB
-%		res((i-1)*imgs+j,:) = double(A(:)');	Esto no funcion, probar otra cosa.
-% Copio a res
-		count = 1;
-		for k=1:alto
-			for h=1:ancho
-				res((i-1)*imgs+j,count) = A(k,h);
-				count = count+1;
-			end
-		end
+		X((i-1)*imgs+j,:) = A(:)';
 	end
 end
 
 % Calculo covarianza.
 for j=1:m
-	media = 0;
+	mu = 0;
 	for i=1:n
-		media = media + res(i,j);
+		mu = mu + X(i,j);
 	end
-	media = media / n;
+	mu = mu / n;
+	media(j) = mu;
 	for i=1:n,
-		res(i,j) = res(i,j) - media;
+		X(i,j) = X(i,j) - mu;
 	end
 
 end
 
-res = res * (1/sqrt(n-1));
+X = X * (1/sqrt(n-1));
 
 % Metodo normal.
 if metodo == 0
-	A = res'*res;
-
+	A = X'*X;
 	% Metodo potencia y deflacion.
 	for i=1:comp
-		[avec,landa] = pim(x,A, iter);
+		[avec,landa] = pim(x, A, iter);
 		vec(i,:) =  avec';
-		val(i,:) = landa;
+		val(i) = landa;
 		A = def(A, avec, landa);
 	end
+
 end
 
 % Metodo alternativo.
 if metodo == 1
-	A = res*res';
-
+	A = X*X';
 	for i=1:comp
 		[avec,landa] = pim(y,A, iter);
 		pvec(i,:) =  avec';
-		val(i,:) = landa;
+		val(i) = landa;
 		A = def(A, avec, landa);
 	end
 
 	for i=1:comp
-		vec(i,:) = (sqrt(val(i,:))/val(i,:))*res'*pvec(i,:)';
+		vec(i,:) = (sqrt(val(i))/val(i))*X'*pvec(i,:)';
 	end
-	for i=1:comp
-		val(i,:) = sqrt(val(i,:));
-	end
+
 end
+
+for i=1:comp
+	val(i) = sqrt(val(i));
+end
+
+val = val';
+
+
+%%Aplicar TC

@@ -192,19 +192,5 @@ void descargarMatriz(Matriz<T>& A, char * buffer){
 	}
 }
 
-void limpiarTest(Test& test){
-	delete[] test.imagen;
-}
 
-void limpiarData(Data& data){
-	delete[] data.base;
-}
-
-void limpiarBuffer(char * buffer){
-	delete[] buffer;
-}
-
-void limpiarTodo(Data& data, char * buffer){
-	limpiarData(data); limpiarBuffer(buffer);
-}
 #endif

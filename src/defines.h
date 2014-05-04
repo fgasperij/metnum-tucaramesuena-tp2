@@ -29,7 +29,7 @@ typedef vector<int> Pos;
 
 /** Parámetros de las imágenes de un mismo conjunto de entrenamiento **/
 struct Data{
-    char* base;	//Directorio de la base de datos.
+    string base;	//Directorio de la base de datos.
     int alto;
     int ancho;
     int personas;
@@ -51,10 +51,6 @@ struct Data{
 	}
 };
 
-struct Test{
-	int sujeto;
-	char* imagen;
-};
 
 
 #define PRECISION 6
@@ -74,7 +70,6 @@ struct Test{
 
 
 const char pgm[5] = ".pgm";
-const int long_pgm = 4;
 
 
 #endif

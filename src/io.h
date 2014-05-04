@@ -12,18 +12,14 @@
 #include <chrono>
 #include "Matriz.h"
 
-#define CANT_DATOS 4
-
-char trashc;
-short trashs;
-
+#define LONG_PGM 4
 
 // Funciones de entrada salida pare leer y escribir datos en archivos.
 // Siempre tratar de usar >> para eliminar los espacios.
 
-void setearPrecision(ofstream& of, int prec){
-	of.setf(ios::fixed, ios::floatfield);
-	of.precision(prec);
+void setearPrecision(ostream& os, int prec){
+	os.setf(ios::fixed, ios::floatfield);
+	os.precision(prec);
 }
 
 // Cuento los caracteres hasta el primer espacio ESPACIO, y restauro el stream.
@@ -84,10 +80,9 @@ ifstream file_s; file_s.open(file);
 
 	// Cuento los caracteres del nombre de la carpeta donde estan las imagenes, creo un buffer con ese tamanio, y lo copio a data.
 	int long_base = contarCaracteres(file_s);
-	data.base = new char [long_base];
-	if(data.base == NULL){cerr << "Puntero null para directorio de imagenes "; return;}
-	obtenerHastaCaracter(file_s, data.base, ESPACIO);
-
+	char buffer[long_base];
+	obtenerHastaCaracter(file_s, buffer, ESPACIO);
+	data.base = string(buffer);
 	// Copio datos basicos.
 	file_s >> data.alto >> data.ancho >> data.personas >> data.imagenes >> data.componentes;
 
@@ -103,16 +98,15 @@ ifstream file_s; file_s.open(file);
 void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, char* buffer){
 
 	ifstream file_s; file_s.open(file);
-
 	// Voy hasta la persona en cuestion
 	ignorarLineas(file_s, persona+1);
 
 	// Obtengo la subcarpeta donde se encuntran las imagenes de la persona	
 	int long_subfolder = contarCaracteres(file_s);
 
-	char subfolder[long_subfolder];
+	char buff_subf[long_subfolder];
 
-	obtenerHastaCaracter(file_s, subfolder, ESPACIO);
+	obtenerHastaCaracter(file_s, buff_subf, ESPACIO);
 
 	// Numero de la imagen, voy tomando todos hasta llegar al correcto.
 	int numero;
@@ -124,10 +118,10 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 	string num = to_string(numero);
 
 	// Concateno todo para obtener la direccion real.
-	int long_file_img = strlen(data.base) + long_subfolder + num.size() + long_pgm;
+	int long_file_img = data.base.size() + long_subfolder + num.size() + LONG_PGM;
 	char file_img [long_file_img];
-	strcpy(file_img, data.base);
-	strcat(file_img, subfolder);
+	strcpy(file_img, data.base.c_str());
+	strcat(file_img, buff_subf);
 	strcat(file_img, num.c_str());
 	strcat(file_img, pgm);
 
@@ -138,7 +132,7 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 
 
 //Lee el resto
-void leerDatosTests(const char*  file, Data& data, Test& test, int imagen, char * buffer){
+int leerDatosTests(const char*  file, Data& data,  int imagen, char * buffer){
 ifstream file_s; file_s.open(file);
 
 	// Ignoro todo hasta llegar a la linea a testear.
@@ -146,15 +140,17 @@ ifstream file_s; file_s.open(file);
 
 	// Hay que tomar la ubicacion de la imagen.
 	int long_test = contarCaracteres(file_s);
-	test.imagen = new char [long_test];
-	obtenerHastaCaracter(file_s, test.imagen, ESPACIO);
+	char buff_test[long_test];
+	obtenerHastaCaracter(file_s, buff_test, ESPACIO);
 	
 	//La copio al buffer.
-	leerPGM(test.imagen, data.ancho*data.alto, buffer);
+	leerPGM(buff_test, data.ancho*data.alto, buffer);
 
+	int sujeto;
 	// Paso los datos a test.  
-	file_s >> test.sujeto;
+	file_s >> sujeto;
 	file_s.close();
+	return sujeto;
 }
 
 // Escribe los resultados en archivo de salida.
@@ -175,17 +171,35 @@ void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 }
 
 template<class T>
-void escribirMatriz(const char*  file, Matriz<T>& A){
-	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	ofstream file_s; file_s.open(file);
-	setearPrecision(file_s, PRECISION);
-	for(int i = 0; i < cantFilas; i++){
-		for(int j = 0; j < cantColumnas; j++){
-		    file_s << A[i][j];
-		    if(j != cantColumnas - 1 ){file_s << " ";}
-		}
-		if(i != cantFilas - 1 ){file_s << endl;}
+void escribirFilaS(ostream& os, Matriz<T>& A, int i){
+	int cantColumnas = A.cantColumnas();
+	for(int j = 0; j < cantColumnas; j++){
+	    os << A[i][j];
+	    if(j != cantColumnas - 1 ){os << " ";}
 	}
+}
+
+template<class T>
+void escribirFila(const char* file, Matriz<T>& A, int i){
+	ofstream file_s; file_s.open(file);
+	escribirFilaS(file_s, A, i);
+	file_s.close();
+}
+
+template<class T>
+void escribirMatrizS(ostream& os, Matriz<T>& A){
+	int cantFilas = A.cantFilas();
+	setearPrecision(os, PRECISION);
+	for(int i = 0; i < cantFilas; i++){
+		escribirFilaS(os, A, i);
+		if(i != cantFilas - 1 ){os << endl;}
+	}
+}
+
+template<class T>
+void escribirMatriz(const char*  file, Matriz<T>& A){
+	ofstream file_s; file_s.open(file);
+	escribirMatrizS(file_s, A);
 	file_s.close();
 }
 
@@ -199,17 +213,22 @@ void leerVector(const char*  file, vector<T>& b){
 	file_s.close();
 }
 
+template<class T>
+void leerMatrizS(ifstream& is, Matriz<T>& A){
+	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
+	for(int i = 0; i < cantFilas; i++){
+		for(int j = 0; j < cantColumnas; j++){
+		    is >> A[i][j];
+		}
+		is.get();
+	}
+}
+
 
 template<class T>
 void leerMatriz(const char*  file, Matriz<T>& A){
-	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	ifstream file_s; file_s.open(file);
-	for(int i = 0; i < cantFilas; i++){
-		for(int j = 0; j < cantColumnas; j++){
-		    file_s >> A[i][j];
-		}
-		file_s.get();
-	}
+	leerMatrizS(file_s, A);
 	file_s.close();
 }
 

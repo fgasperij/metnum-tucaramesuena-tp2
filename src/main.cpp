@@ -138,9 +138,8 @@ int main(int argc, char **argv)
 
 	for(int i = 0; i < data.tests; i++){
 
-		Test test;
 		// Vectorizo la imagen
-		leerDatosTests(file_in, data, test, i, buffer);
+		int sujeto = leerDatosTests(file_in, data, i, buffer);
 		Matriz<double> IMG (1, m);
 		cargarMatriz(IMG, buffer);
 		// Calculo algunas cosas...
@@ -151,10 +150,9 @@ int main(int argc, char **argv)
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
 		// IDENTIFICAR SUJETO;
-		//if(result == test.sujeto) = BIEN IDENTIFICADO
+		//if(result == sujeto) = BIEN IDENTIFICADO
 		//else = SEGUI PARTICIPANDO
 
-		limpiarTest(test);
 	}
 
 	// Escribo los valores singulares en el archivo de salida.
