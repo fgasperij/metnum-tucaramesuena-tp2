@@ -12,6 +12,8 @@
 #include <chrono>
 #include "Matriz.h"
 
+#define CANT_DATOS 4
+
 char trashc;
 short trashs;
 
@@ -51,13 +53,16 @@ void obtenerHastaCaracter(ifstream& ifs, char * buffer, char c){
 }
 
 // Lectura de archivo PGM. Asumo P5.
-void leerPGM(const char*  file, Data& data, char * buffer){
-	ifstream file_s; file_s.open(file);
-	file_s >> trashc >> trashc >> trashs >> trashs >> trashs;
-	ignorarLineas(file_s);
-	int tamanio = data.alto*data.ancho;
+// Cuidado: Falla si la imagen comienza con #.
+void leerPGM(const char*  file, int tamanio, char * buffer){
+
+	ifstream file_se( file, ios::binary | ios::ate);
+	int tam =  file_se.tellg();
+	ifstream file_s(file, ios::binary);
+	file_s.seekg(tam - tamanio-1);
 	file_s.read(buffer, tamanio);
 	file_s.close();
+
 }
 
 // Escritura de archivo PGM. Asumo P5.
@@ -127,7 +132,7 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 	strcat(file_img, pgm);
 
 	// Leo el archivo y lo paso al buffer.
-	leerPGM(file_img, data, buffer);
+	leerPGM(file_img, data.ancho*data.alto, buffer);
 	file_s.close();
 }
 
@@ -145,7 +150,7 @@ ifstream file_s; file_s.open(file);
 	obtenerHastaCaracter(file_s, test.imagen, ESPACIO);
 	
 	//La copio al buffer.
-	leerPGM(test.imagen, data, buffer);
+	leerPGM(test.imagen, data.ancho*data.alto, buffer);
 
 	// Paso los datos a test.  
 	file_s >> test.sujeto;
@@ -173,6 +178,7 @@ template<class T>
 void escribirMatriz(const char*  file, Matriz<T>& A){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	ofstream file_s; file_s.open(file);
+	setearPrecision(file_s, PRECISION);
 	for(int i = 0; i < cantFilas; i++){
 		for(int j = 0; j < cantColumnas; j++){
 		    file_s << A[i][j];

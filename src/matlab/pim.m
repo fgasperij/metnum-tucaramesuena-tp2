@@ -1,10 +1,9 @@
 function [vec,value]=pim(start,A,iter)
-x=start;
+v=start;
 for i=1:iter
-	x=A*x;
-	n=norm(x);
-	x=x/n;
-	i = i+1;
+	v=A*v;
+	n=norm(v);
+	v=v/n;
 end
-vec=x;
-value=n;
+vec=v;
+value=(v'*A*v)/(v'*v);

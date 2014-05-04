@@ -73,8 +73,10 @@ template<class T>
 void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T>& autovalores, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	Matriz<T> v (cantFilas, 1, 1); // = ???? RANDOM?
+	T n;
 	for(int i = 0; i < PITER; i++){
 		v = A*v;
+		n = calcularNorma(v);
 		v*(1/calcularNorma(v));
 	}
 
