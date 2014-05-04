@@ -17,6 +17,11 @@ void mostrarFila(Matriz<T> A, int i){
 }
 
 template<class T>
+void mostrarColumna(Matriz<T> A, int i){
+	escribirColumnaS(cout, A, i);
+}
+
+template<class T>
 void mostrarMatriz( Matriz<T>& A){
 	escribirMatrizS(cout, A);
 }

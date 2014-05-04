@@ -28,7 +28,7 @@ for i=1:pers
 		path_img = strcat(path_img,int2str(j));
 		path_img = strcat(path_img,'.pgm');
 		A = imread(path_img);
-		X((i-1)*imgs+j,:) = A(:)';
+		X((i-1)*imgs+j,:) =  reshape(A', 1, numel(A)) ;
 	end
 end
 
@@ -85,3 +85,8 @@ val = val';
 
 
 %%Aplicar TC
+
+for i=1:n
+	TC(i,:)	 = vec*(X(i,:))';
+end
+

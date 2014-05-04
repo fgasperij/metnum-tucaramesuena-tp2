@@ -95,7 +95,7 @@ template<class T>
 Matriz<T> dameFila(Matriz<T>& A, int numero){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	Matriz<T> fila (1, cantColumnas);
-	for(int i = 0; i < A.cantColumnas; i++){
+	for(int i = 0; i < cantColumnas; i++){
 		fila[0][i] = A[numero][i];
 	}
 	return fila;

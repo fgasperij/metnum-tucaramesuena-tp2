@@ -135,6 +135,9 @@ int main(int argc, char **argv)
 
 	// Identificar sujetos --- SIN IMPLEMENTAR
 
+	// Aplico transfo caracteristica a todas las muestras.
+	Matriz<double> TC = transfCaract(A, autos.autovectores);
+
 
 	for(int i = 0; i < data.tests; i++){
 
