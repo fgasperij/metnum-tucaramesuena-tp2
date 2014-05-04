@@ -162,7 +162,7 @@ int main(int argc, char **argv)
 	}
 
 	escribirMatriz(file_out, vs);
-
+	delete[] buffer;
 	
 	msg_footer();
 	return 0;

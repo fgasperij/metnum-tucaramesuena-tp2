@@ -49,13 +49,12 @@ void obtenerHastaCaracter(ifstream& ifs, char * buffer, char c){
 }
 
 // Lectura de archivo PGM. Asumo P5.
-// Cuidado: Falla si la imagen comienza con #.
 void leerPGM(const char*  file, int tamanio, char * buffer){
 
 	ifstream file_se( file, ios::binary | ios::ate);
 	int tam =  file_se.tellg();
 	ifstream file_s(file, ios::binary);
-	file_s.seekg(tam - tamanio-1);
+	file_s.seekg(tam - tamanio);
 	file_s.read(buffer, tamanio);
 	file_s.close();
 
@@ -155,24 +154,49 @@ ifstream file_s; file_s.open(file);
 
 // Escribe los resultados en archivo de salida.
 template<class T>
+void escribirVectorS(ofstream& os, const vector<T>& b, int modo = VERT){
+	setearPrecision(os, PRECISION);
+	int tamanio = b.size();
+	for(int i = 0; i < tamanio; i++){
+	os << b[i];
+	if(modo == VERT){
+	    os << endl;
+	}
+	if(i == tamanio-1 and modo == HORIZ){os << endl;}
+	else if(modo == HORIZ){os << " ";}
+	}
+}
+	
+
+template<class T>
 void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 	ofstream file_s; file_s.open(file, fstream::app);
 	setearPrecision(file_s, PRECISION);
-	int tamanio = b.size();
-	for(int i = 0; i < tamanio; i++){
-	file_s << b[i];
-	if(modo == VERT){
-	    file_s << endl;
+	escribirVectorS(file_s, b, modo);
+	file_s.close();
+}
+
+template<class T>
+void escribirColumnaS(ostream& os, Matriz<T>& A, int j){
+	int cantFilas = A.cantFilas();
+	setearPrecision(os, PRECISION);
+	for(int i = 0; i < cantFilas; i++){
+	    os << A[i][j];
+	    if(i != cantFilas - 1 ){os << " ";}
 	}
-	if(i == tamanio-1 and modo == HORIZ){file_s << endl;}
-	else if(modo == HORIZ){file_s << " ";}
-	}
+}
+
+template<class T>
+void escribirColumna(const char* file, Matriz<T>& A, int j){
+	ofstream file_s; file_s.open(file);
+	escribirFilaS(file_s, A, j);
 	file_s.close();
 }
 
 template<class T>
 void escribirFilaS(ostream& os, Matriz<T>& A, int i){
 	int cantColumnas = A.cantColumnas();
+	setearPrecision(os, PRECISION);
 	for(int j = 0; j < cantColumnas; j++){
 	    os << A[i][j];
 	    if(j != cantColumnas - 1 ){os << " ";}
