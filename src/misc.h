@@ -31,7 +31,7 @@ T calcularMedia(Matriz<T>& A, int columna){
 	for(int i = 0; i < cantFilas; i++){
 		suma += A[i][columna];
 	}
-	return suma / cantFilas;
+	return (suma / ((T) cantFilas));
 }
 
 template<class T> 

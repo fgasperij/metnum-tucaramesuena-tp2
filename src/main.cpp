@@ -57,10 +57,28 @@ int main(int argc, char **argv)
 
 /*** Face Recognition ***/
 
+	
+	// ESTADO ACTUAL:
+	
+	// Entrada/Salida -- IMPLEMENTADO -- OK
+
+	// Armado de matriz -- IMPLEMENTADO -- OK
+
+	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
+
+	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
+
+	// Metodo alternativo -- IMPLEMENTADO -- OK
 		
+	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - OK
+	
+	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - OK
+
+	// Identificar sujetos --- IMPLEMENTADO -- OK
+
 
 	char* file_in = argv[1]; char* file_out = argv[2];
-	int met = atoi(argv[3]);
+	int metodo = atoi(argv[3]);
 
 	Data data;
 	leerDatosBasicos(file_in, data);
@@ -82,11 +100,14 @@ int main(int argc, char **argv)
 			count++;
 		}
 	}
+
 	// Armo A del enunciado.
+
 	Matriz<double> media = armarMatrizA(A);
 
+
 	Autos<double> autos;
-	if(met == 0){
+	if(metodo == 0){
 		// At = A'
 		Matriz<double> At = A;
 		At.transponer();
@@ -99,6 +120,7 @@ int main(int argc, char **argv)
 	else{
 		// At = A'
 		Matriz<double> At = A;
+
 		At.transponer();
 		// P = A'*A
 		Matriz<double> P = A*At;
@@ -115,30 +137,11 @@ int main(int argc, char **argv)
 		}
 	}
 
-
-	
-	// ESTADO ACTUAL:
-	
-	// Entrada/Salida -- IMPLEMENTADO -- OK
-
-	// Armado de matriz -- IMPLEMENTADO -- OK
-
-	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
-
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
-
-	// Metodo alternativo -- IMPLEMENTADO -- OK
-		
-	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - EN PRUEBAS
-	
-	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - EN PRUEBAS
-
-	// Identificar sujetos --- IMPLEMENTADO -- EN PRUEBAS
-
 	// Aplico transfo caracteristica a todas las muestras.
 	Matriz<double> TC = transfCaract(A, autos.autovectores);
 
-
+	// Hay que restar la media.
+	media * (-1);
 	for(int i = 0; i < data.tests; i++){
 
 		// Vectorizo la imagen
@@ -147,23 +150,19 @@ int main(int argc, char **argv)
 		cargarMatriz(IMG, buffer);	
 
 		// Calculo algunas cosas...
-		media * (-1);
+
+		// Le resto la media.
 		IMG + media;
 
-		IMG * (1/sqrt(n-1));
-
-
+		// Aplico transformacion caracteristica a la imagen.
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
-		//if(i == 0){escribirMatriz("/home/franco/Escritorio/p.out",TCIMG);}	
-
-		// Aplico transformacion caracteristica a la imagen.
-		//Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
+		// Identificando... segun el paper.
 		int identificado = identificarCara(TC, TCIMG, data);
 
 		// IDENTIFICAR SUJETO;
 		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
-		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << endl;}
+		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl;}
 
 	}
 
@@ -173,7 +172,9 @@ int main(int argc, char **argv)
 		vs[i][0] = sqrt(autos.autovalores[0][i]);
 	}
 
+
 	escribirMatriz(file_out, vs);
+
 	delete[] buffer;
 	
 	msg_footer();
