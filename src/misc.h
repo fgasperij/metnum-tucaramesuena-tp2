@@ -176,20 +176,19 @@ int identificarCara(Matriz<T>& A, Matriz<T>& img, Data& data){
 	T minimo = std::numeric_limits<std::streamsize>::max();
 	int sujeto = -1;
 	for(int i = 0; i < data.personas; i++){
+		T distancia;
+		Matriz<T> vec_dist;
 		Matriz<T> prom (1, data.componentes);
 		for(int j = 0; j < data.imagenes; j++){
 			Matriz<T> muestra = dameFila(A,i*data.imagenes+j);
-			prom+muestra;
-		}
-		
-		prom*((T) 1/data.imagenes);
-		Matriz<T> vec_dist = img;
-		prom*(-1);
-		vec_dist + prom;
-		T distancia = calcularNorma(vec_dist);
-		if(distancia < minimo){
-			minimo = distancia;
-			sujeto = i+1;
+			muestra*(-1);
+			vec_dist = img;
+			vec_dist + muestra;
+			distancia = calcularNorma(vec_dist);
+			if(distancia < minimo){
+				minimo = distancia;
+				sujeto = i+1;
+			}
 		}
 	}
 	return sujeto;

@@ -91,39 +91,48 @@ for i=1:n
 end
 
 
-
 %% IDENTIFICACION CARA
-% Path de la imagen.
-path = path_base;
-path = strcat(path, int2str(1));
-path = strcat(path,'/');
-path_img = path;
-path_img = strcat(path_img,int2str(10));
-path_img = strcat(path_img,'.pgm');
 
-%Leo imagen.
-vec_img = imread(path_img);
-% Vectorizo.
-vec_img = reshape(vec_img', 1, numel(vec_img));
-vec_img = double(vec_img)-media;
-vec_img = vec_img*(1/(sqrt(n-1)));
-vec_img = (vec*vec_img')';
+fallos = tests;
+results = zeros(tests,2);
+for k=1:tests
+	% Path de la imagen.
+	path = path_base;
+	path = strcat(path, int2str(k));
+	path = strcat(path,'/');
+	path_img = path;
+	path_img = strcat(path_img,int2str(10));
+	path_img = strcat(path_img,'.pgm');
 
-
-
-minimo = inf;
-imagen = 1;
-for i=1:pers
-	x = zeros(1, comp);
-	for j=1:imgs
-		x = x+TC((i-1)*imgs + j,:);
+	%Leo imagen.
+	vec_img = imread(path_img);
+	% Vectorizo.
+	vec_img = reshape(vec_img', 1, numel(vec_img));
+	vec_img = double(vec_img)-media;
+	vec_img = vec_img*(1/(sqrt(n-1)));
+	vec_img = (vec*vec_img')';
+	
+	% Comparo con todas las imagenes.
+	minimo = inf;
+	for i=1:pers
+		for j=1:imgs
+			% Cargo muestra del trainset.
+			muestra = TC((i-1)*imgs + j,:);
+			% Calculo distancia de la imagen a la muestra.
+			distancia = norm(vec_img-muestra);
+			% Actualizo.
+			if distancia < minimo
+				minimo = distancia;
+				imagen = i;
+			end	
+		end
 	end
-	x = x/imgs;
-	distancia = norm(vec_img - x)^2;
-	if distancia < minimo
-		minimo = distancia;
-		imagen = i;
+
+	if imagen == k
+		fallos = fallos - 1;
 	end
+	results(k,1) = k;
+	results(k,2) = imagen;
 end
-imagen
-
+aciertos = tests-fallos
+fallos

@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
 
 	char* file_in = argv[1]; char* file_out = argv[2];
-	int metodo = atoi(argv[3]);
+	int metod = atoi(argv[3]);
 
 	Data data;
 	leerDatosBasicos(file_in, data);
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
 
 	Autos<double> autos;
-	if(metodo == 0){
+	if(metod == 0){
 		// At = A'
 		Matriz<double> At = A;
 		At.transponer();
@@ -142,6 +142,7 @@ int main(int argc, char **argv)
 
 	// Hay que restar la media.
 	media * (-1);
+	int fallos = 0;
 	for(int i = 0; i < data.tests; i++){
 
 		// Vectorizo la imagen
@@ -154,6 +155,8 @@ int main(int argc, char **argv)
 		// Le resto la media.
 		IMG + media;
 
+		IMG*((double) 1/sqrt((n-1)));
+
 		// Aplico transformacion caracteristica a la imagen.
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
@@ -162,9 +165,10 @@ int main(int argc, char **argv)
 
 		// IDENTIFICAR SUJETO;
 		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
-		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl;}
+		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; fallos++;}
 
 	}
+	cout << "Aciertos: " << data.tests - fallos << endl << "Fallos: "  << fallos << endl;
 
 	// Escribo los valores singulares en el archivo de salida.
 	Matriz<double> vs (data.componentes, 1);
