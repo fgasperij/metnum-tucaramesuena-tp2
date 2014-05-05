@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 	
 	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - EN PRUEBAS
 
-	// Identificar sujetos --- SIN IMPLEMENTAR
+	// Identificar sujetos --- IMPLEMENTADO -- EN PRUEBAS
 
 	// Aplico transfo caracteristica a todas las muestras.
 	Matriz<double> TC = transfCaract(A, autos.autovectores);
@@ -144,17 +144,26 @@ int main(int argc, char **argv)
 		// Vectorizo la imagen
 		int sujeto = leerDatosTests(file_in, data, i, buffer);
 		Matriz<double> IMG (1, m);
-		cargarMatriz(IMG, buffer);
+		cargarMatriz(IMG, buffer);	
+
 		// Calculo algunas cosas...
 		media * (-1);
 		IMG + media;
-		IMG * sqrt(n-1);
-		// Aplico transformacion caracteristica a la imagen.
+
+		IMG * (1/sqrt(n-1));
+
+
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
+		//if(i == 0){escribirMatriz("/home/franco/Escritorio/p.out",TCIMG);}	
+
+		// Aplico transformacion caracteristica a la imagen.
+		//Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
+		int identificado = identificarCara(TC, TCIMG, data);
+
 		// IDENTIFICAR SUJETO;
-		//if(result == sujeto) = BIEN IDENTIFICADO
-		//else = SEGUI PARTICIPANDO
+		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
+		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << endl;}
 
 	}
 

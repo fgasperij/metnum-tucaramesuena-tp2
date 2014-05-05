@@ -144,6 +144,7 @@ class Matriz{
 
 
 
+
 		Matriz<T> operator*(Matriz<T>& B){
 			if(this->cantColumnas() != B.cantFilas()){cerr << "Error: Tamaño no coincidente para el producto" << endl; return (Matriz<T> (0,0));}
 			Matriz<T> res (this->cantFilas(), B.cantColumnas());

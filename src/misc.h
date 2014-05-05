@@ -44,7 +44,7 @@ Matriz<T> armarMatrizA(Matriz<T>& A){
 			A[i][j] = A[i][j] - media[0][j];
 		}
 	}
-	A * (1/sqrt( cantFilas - 1));
+	A * ((T) 1/sqrt( cantFilas - 1));
 	return media;
 }
 
@@ -139,7 +139,7 @@ Autos<T> calcularAuto(Matriz<T>& A, int componentes){
 template<class T>
 T dameCoordenada(Matriz<T>& A, Matriz<T>& autovectores, int fila, int coord){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
-	int acum = 0;
+	T acum = 0;
 	for(int i = 0; i < cantColumnas; i++){
 		acum += autovectores[coord][i]*A[fila][i];
 	}
@@ -170,13 +170,38 @@ Matriz<T> transfCaract(Matriz<T>& A, Matriz<T>& autovectores){
 	return res;
 }
 
+
+template<class T>
+int identificarCara(Matriz<T>& A, Matriz<T>& img, Data& data){
+	T minimo = std::numeric_limits<std::streamsize>::max();
+	int sujeto = -1;
+	for(int i = 0; i < data.personas; i++){
+		Matriz<T> prom (1, data.componentes);
+		for(int j = 0; j < data.imagenes; j++){
+			Matriz<T> muestra = dameFila(A,i*data.imagenes+j);
+			prom+muestra;
+		}
+		
+		prom*((T) 1/data.imagenes);
+		Matriz<T> vec_dist = img;
+		prom*(-1);
+		vec_dist + prom;
+		T distancia = calcularNorma(vec_dist);
+		if(distancia < minimo){
+			minimo = distancia;
+			sujeto = i+1;
+		}
+	}
+	return sujeto;
+}
+
 // Cargo una matriz
 template<class T>
 void cargarMatriz(Matriz<T>& A, char * buffer){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
 	for(int i = 0; i < cantFilas; i++){
 		for(int j = 0; j < cantColumnas; j++){
-			A[i][j] = (T) buffer[i*cantColumnas + j];
+			A[i][j] = (unsigned char) buffer[i*cantColumnas + j];
 		}
 	}
 }
