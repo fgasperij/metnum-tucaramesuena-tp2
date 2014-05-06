@@ -1,4 +1,4 @@
-function [vec, val] = tp2()
+function [P, vec, val] = tp2(metodo)
 
 % Modificar path_root, path_base, alto, ancho, imgs, pers, comp.
 % TODO: Parsear los parametros directamente del archivo.
@@ -11,6 +11,7 @@ pers = 41;
 comp = 15;
 m = ancho*alto;
 n = imgs*pers;
+tests = 41;
 
 %Otros parametros
 iter = 300; % Cantidad de iteraciones para el metodo de potencias.
