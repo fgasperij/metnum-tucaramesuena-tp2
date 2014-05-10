@@ -66,7 +66,7 @@ struct Data{
 
 #define GRAYSCALE 255
 
-#define PITER 100
+#define PITER 300
 
 
 const char pgm[5] = ".pgm";
