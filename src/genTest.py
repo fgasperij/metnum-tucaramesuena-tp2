@@ -85,23 +85,22 @@ def main(arg = argv):
 
 # En principio testeo con todas las imagenes que no estan cargadas, quizas despues de pueda parametrizar.
 	restantes = 0
-	for i in range(end_pers):
-		for j in range(end_ipp):
+	for i in range(end_pers+1):
+		for j in range(end_ipp+1):
 			if(Matriz[i][j] == 0):
 				restantes += 1
 
 	f.write( str(restantes) )
 	f.write("\n")
 
-	for i in range(end_pers):
-		for j in range(end_ipp):
+	for i in range(end_pers+1):
+		for j in range(end_ipp+1):
 			if(Matriz[i][j] == 0):
 				f.write(path)
 				f.write("s")
 				f.write( str(i+1) )
 				f.write("/")
 				f.write( str(j+1) )
-				f.write("/")
 				f.write(".pgm")
 				f.write("\n")
 

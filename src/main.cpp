@@ -178,9 +178,9 @@ int main(int argc, char **argv)
 
 		ttic += get_time();
 
-		// IDENTIFICAR SUJETO;
-		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
-		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; fallos++;}
+//		// IDENTIFICAR SUJETO;
+//		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
+//		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; fallos++;}
 
 	}
 	ttic /= data.tests;
@@ -194,9 +194,12 @@ int main(int argc, char **argv)
 
 
 	escribirMatriz(file_out, vs);
-
-	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
-	cout << "Tiempo total de identifiación cara: " << ttic << endl;
+	int aciertos = data.tests - fallos;
+//	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
+//	cout << "Tiempo total de identifiación cara: " << ttic << endl;
+	ofstream file_s; file_s.open("results.out", ofstream::app);
+	file_s << tt << " " << ttic <<  " " << (double (aciertos/data.tests)) << endl;
+	file_s.close();
 
 	delete[] buffer;
 	
