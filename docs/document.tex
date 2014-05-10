@@ -1,0 +1,102 @@
+\documentclass[11pt, a4paper]{article}
+\input{macrostp2.tex}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{paralist}
+\usepackage{multirow}
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{lscape} 
+
+%El siguiente paquete permite escribir la caratula facilmente
+\usepackage{caratula}
+\hypersetup{
+  pdftitle={ Métodos Numéricos - TP2 },
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black 
+}
+
+
+
+\newlength{\AnchoEncabezados}\setlength{\AnchoEncabezados}{6em}
+\newcommand{\EncabezadoInline}[2]{
+    
+    \setlength{\hangindent}{\tadAnchoEncabezados + \parindent}%
+    
+        \parbox{\AnchoEncabezados}{\textbf{#1}}#2%
+}
+
+
+
+\newcommand{\Encabezado}[2]{%
+    \par\EncabezadoInline{#1}{#2}\par%
+}
+
+\newcommand{\funcion}[2]{\textbf{#1}{#2}\BlankLine}
+
+
+%\newcommand{\myFuncion}[3]{
+%	\begin{algorithm}[H][H]
+%	\dontprintsemicolon
+%	{\bf {#1}} {#2}\;
+%	\nocaptionofalgo
+%	\Indp
+%	{#3}
+%	\Indm
+%	\BlankLine
+%	\end{algorithm}
+%}
+   
+%Datos para la caratula
+\materia{Métodos Numéricos}
+
+\titulo{TP 2 - Tu cara me suena...}
+
+%\fecha{DDDD dd de MMMM, AAAA}
+
+%\grupo{Grupo 2}
+
+\integrante{Franco}{}{}
+\integrante{Fernando}{}{}
+\integrante{Ana}{}{}
+
+\resumen{En este trabajo práctico, desarrollamos un método para el reconocimiento de caras basado en el enfoque de \textit{eignfaces}. Para ello, manipulamos la base de imágenes de entrenamiento matricialmente; obteniendo las componentes principales (autovectores) de su matriz de covarianzas a través del método de la potencia con deflación. Exploramos, luego, algunos métodos de clasificación, su tasa de efectividad y su relación con las variaciones en el conjunto inicial de entrenamiento.}
+\claves{Face Recognition, Componentes Principales, SVD}
+
+\begin{document}
+ 
+ %esto construye la caratula
+ \maketitle
+ \tableofcontents
+
+
+\newpage
+
+\input{intro.tex}
+
+\input{desarrollo.tex}
+
+\input{resultados.tex}
+
+\input{discusion.tex}
+
+\input{conclusion.tex}
+
+%\input{apendices.tex}
+
+%\input{referencias.tex}
+
+\newpage
+\bibliographystyle{plain}
+
+
+\end{document}
