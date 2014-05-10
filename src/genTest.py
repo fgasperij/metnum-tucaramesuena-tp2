@@ -32,7 +32,7 @@ def main(arg = argv):
 	m = 0
 	n = 0
 	path = ""
-	if(argv[2] == 0):
+	if( int(argv[2]) == 0):
 		m = 112
 		n = 92
 		path = "../data/ImagenesCaras/"
@@ -58,13 +58,15 @@ def main(arg = argv):
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
 	Matriz = [[0 for x in xrange(end_ipp+1)] for x in xrange(end_pers+1)]
-
+	#Orden relativo de las personas.
+	orden = [0 for x in xrange(end_pers+1)]
 	for j in range( personas ):
 	
 		pers = randint(start_pers, end_pers)
 		while(Matriz[pers][imps] == 1):
 			pers = randint(start_pers, end_pers)
 		
+		orden[pers] = j+1
 		f.write("s")
 		f.write(str(pers+1))
 		f.write("/")
@@ -101,7 +103,8 @@ def main(arg = argv):
 				f.write( str(i+1) )
 				f.write("/")
 				f.write( str(j+1) )
-				f.write(".pgm")
+				f.write(".pgm ")
+				f.write( str(orden[i]) )
 				f.write("\n")
 
 
