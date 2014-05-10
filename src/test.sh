@@ -2,10 +2,10 @@
 
 #Modo de uso= ./tests.sh
 
-cantTests=5
+cantTests=15
 componentes=15
 personas=41
-imps=5
+imps=9
 imgGrande=0
 imgChica=1
 metRapido=1
@@ -17,6 +17,7 @@ python metnum.py build
 #Borro resultados anteriores
 rm -f tests/*.out
 rm -f tests/*.in
+rm -f *.out
 
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
@@ -35,24 +36,31 @@ do
 	./tp tests/test$i.in tests/test$i.out $metRapido
 done
 
+tt=0
+ttic=0
+ta=0
 # Calculo promedios
 while read line           
 do           
 	temp=$line
-	a[0]=0
-	a[1]=0
-	a[2]=0 
 	OIFS=$IFS
 	IFS=' '
-	aux=$temp
 	index=0
-	for x in $aux
+	for x in $line
 	do
-	    acum=${a[index]}
-	    acum=$(echo "$acum+$x" | bc)
-	    echo $acum
-	    echo $x
-	    a[index]=$acum
+
+	    if [ $index -eq 0 ]
+	    then
+	   	 tt=$(echo "$tt+$x" | bc)
+	    fi
+	    if [ $index -eq 1 ]
+	    then
+	 	   ttic=$(echo "$ttic+$x" | bc)
+	    fi
+	    if [ $index -eq 2 ]
+	    then
+	   	 ta=$(echo "$ta+$x" | bc)
+	    fi
 	    index=$(($index+1))
 	    if [ $index -eq 3 ]
 	    then
@@ -62,19 +70,16 @@ do
 	IFS=$OIFS    
 done <results.out    
 
-for((i=0; i < 3; i++))
-do
-    acum=${a[i]}
-    acum=$(echo "$acum/$cantTests" | bc)
-    acum=${a[i]}	
-done
+tt=$(echo "$tt/$cantTests" | bc)
+ttic=$(echo "$ttic/$cantTests" | bc)
+ta=$(echo "$ta/$cantTests" | bc)
 
 # Tiempo de ejecucion metodo potencia y demases
-echo ${a[0]}
+echo $tt
 echo
 # Tiempo de ejecucion identificacion cara
-echo ${a[1]}
+echo $ttic
 echo
 # Tasa de aciertos.
-echo ${a[2]}
+echo $ta
 
