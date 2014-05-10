@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 
 	Matriz<double> media = armarMatrizA(A);
 
-
+	double tt = 0;
 	Autos<double> autos;
 	if(metod == 0){
 		// At = A'
@@ -114,8 +114,13 @@ int main(int argc, char **argv)
 		// P = A'*A
 		Matriz<double> P = At*A;
 
+		// CALCULO DE TIEMPO
+		init_time();
+
 		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
+
 		autos = calcularAuto(P, data.componentes);
+		tt += get_time();
 	}
 	else{
 		// At = A'
@@ -124,11 +129,15 @@ int main(int argc, char **argv)
 		At.transponer();
 		// P = A'*A
 		Matriz<double> P = A*At;
-	
+		// CALCULO DE TIEMPO
+		init_time();
+
 		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
 		// En el metodo alternativo hay que hacer un par de cuentas para hallas los autovectores. Los autovalores son los mismos.
+
 		autos = calcularAuto(P, data.componentes);
 		autos.autovectores = At*autos.autovectores;
+		tt += get_time();
 		for(int j = 0; j < data.componentes; j++){
 			double landa = autos.autovalores[0][j];
 			for(int i = 0; i < m; i++){
@@ -138,11 +147,14 @@ int main(int argc, char **argv)
 	}
 
 	// Aplico transfo caracteristica a todas las muestras.
+	init_time();
 	Matriz<double> TC = transfCaract(A, autos.autovectores);
+	tt += get_time();
 
 	// Hay que restar la media.
 	media * (-1);
 	int fallos = 0;
+	double ttic = 0;
 	for(int i = 0; i < data.tests; i++){
 
 		// Vectorizo la imagen
@@ -150,8 +162,9 @@ int main(int argc, char **argv)
 		Matriz<double> IMG (1, m);
 		cargarMatriz(IMG, buffer);	
 
+		// CALCULO DE TIEMPO
+		init_time();
 		// Calculo algunas cosas...
-
 		// Le resto la media.
 		IMG + media;
 
@@ -163,11 +176,14 @@ int main(int argc, char **argv)
 		// Identificando... segun el paper.
 		int identificado = identificarCara(TC, TCIMG, data);
 
+		ttic += get_time();
+
 		// IDENTIFICAR SUJETO;
 		if(identificado == sujeto){cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;}
 		else{cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; fallos++;}
 
 	}
+	ttic /= data.tests;
 	cout << "Aciertos: " << data.tests - fallos << endl << "Fallos: "  << fallos << endl;
 
 	// Escribo los valores singulares en el archivo de salida.
@@ -178,6 +194,9 @@ int main(int argc, char **argv)
 
 
 	escribirMatriz(file_out, vs);
+
+	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
+	cout << "Tiempo total de identifiación cara: " << ttic << endl;
 
 	delete[] buffer;
 	
