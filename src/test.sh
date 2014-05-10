@@ -70,9 +70,9 @@ do
 	IFS=$OIFS    
 done <results.out    
 
-tt=$(echo "$tt/$cantTests" | bc -l)
-ttic=$(echo "$ttic/$cantTests" | bc -l)
-ta=$(echo "$ta/$cantTests" | bc -l)
+tt=$(echo "$tt/$cantTests" | bc -l | awk '{printf "%f", $0}')
+ttic=$(echo "$ttic/$cantTests" | bc -l | awk '{printf "%f", $0}')
+ta=$(echo "$ta/$cantTests" | bc -l | awk '{printf "%f", $0}')
 
 # Tiempo de ejecucion metodo potencia y demases
 echo $tt
