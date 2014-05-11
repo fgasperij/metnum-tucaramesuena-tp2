@@ -1,7 +1,14 @@
 #!/bin/bash
 
-#Modo de uso= ./tests.sh
+#Modo de uso= ./tests.sh [-q Q] [-k K] [-i IMPS] [-b BASE] [-m MET] [-p P]
+# K = Cantidad de components.
+# IMPs = Imagenes por persona.
+# Q = Cantidad de tests.
+# BASE = Base de imagenes: 0 = 112x92 ** 1 = 28x23. Default = 0
+# MET = Metodo: 0 = Lento, 1 = Rapido.
+# P = Cantidad de personas
 
+#Valores default:
 cantTests=5
 componentes=15
 personas=41
@@ -10,6 +17,9 @@ imgGrande=0
 imgChica=1
 metRapido=1
 metLento=0
+met=$metRapido
+base=$imgGrande
+
 
 #Compilo
 python metnum.py build
@@ -19,11 +29,84 @@ rm -f tests/*.out
 rm -f tests/*.in
 rm -f results.out
 
+while getopts  "q:k:i:b:m:p:hc" arg
+do
+	case $arg in
+		q)
+			cantTests=$OPTARG
+			if [ $cantTests -le 0 ]
+			then
+				echo Cantidad de tests invalido
+				exit
+			fi
+			;;
+		k)
+			componentes=$OPTARG
+			if [ $componentess -le 0 ] || [ $componentes -ge 200 ]
+			then
+				echo Cantidad de componentes invalido
+				exit
+			fi
+			;;
+		imps)
+			imps=$OPTARG
+			if [ $imps -ge 11 ] || [ $imps -le 0 ]
+			then
+				echo Cantidad de imagenes por persona invalido
+				exit
+			fi
+			;;
+		base)
+			base=$OPTARG
+			if [ $base -ne 0 ] || [ $base -ne 1 ]
+			then
+				echo Base no valida
+				exit
+			fi
+			;;
+		met)
+			met=$OPTARG
+			if [ $met -ne 0 ] || [ $base -ne 1 ]
+			then
+				echo Metodo no valida
+				exit
+			fi
+			;;
+		p)
+			personas=$OPTARG
+			if [ $personas -le 0 ] || [ $personas -ge 42 ]
+			then
+				echo Cantidad de personas no valida
+				exit
+			fi
+			;;
+		c)
+			echo "Eliminando tests/.out, tests/.in, results.out"
+			rm -f tests/*.out
+			rm -f tests/*.in
+			rm -f results.out
+			exit
+			;;
+		h)
+			echo "Modo de uso= ./test.sh [-c] [-q Q] [-k K] [-i IMPS] [-b BASE] [-m MET] [-p P]"
+			echo "K = Cantidad de componentes. Default = 15"
+			echo "IMPs = Imagenes por personas. Default = 41"
+			echo "Q = Cantidad de tests. Default = 5"
+			echo "BASE = Base de imagenes: 0 = 112x92 ** 1 = 28x23. Default = 0"
+			echo "MET = Metodo: 0 = Lento, 1 = Rapido. Default = Rapido"
+			echo "P = Cantidad de personas. Default = 41"
+			echo "c = Limpiar archivos."
+			exit
+			;;
+	esac
+done
+
+
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
 	printf "."
-	./genTest.py -o tests/test$i.in -base $imgGrande -imps $imps -k $componentes -p $personas -s $i
+	./genTest.py -o tests/test$i.in -base $base -imps $imps -k $componentes -p $personas -s $i
 done
 
 echo
@@ -33,7 +116,7 @@ echo
 for((i=1; i < $cantTests+1; i++))
 do
 	echo "Corriendo test $i "
-	./tp tests/test$i.in tests/test$i.out $metRapido
+	./tp tests/test$i.in tests/test$i.out $met
 done
 
 tt=0

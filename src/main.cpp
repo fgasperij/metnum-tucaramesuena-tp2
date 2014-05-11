@@ -172,17 +172,18 @@ int main(int argc, char **argv)
 
 		// Identificando... segun el paper.
 		// int identificado = identificarCara(TC, TCIMG, data);
-		int identificado = identificarCaraConPromedio(TC, TCIMG, data);
+		int identificado = identificarCara(TC, TCIMG, data);
 
 		ttic += get_time();
 
-//		// IDENTIFICAR SUJETO;
-//		if(identificado == sujeto){
-//			cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;
-//		} else {
-//			cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; 
-//			fallos++;
-//		}
+
+		// IDENTIFICAR SUJETO;
+		if(identificado == sujeto){
+			//cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;
+		} else {
+			//cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; 
+			fallos++;
+		}
 
 	}
 	ttic /= data.tests;
@@ -200,7 +201,7 @@ int main(int argc, char **argv)
 //	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
 //	cout << "Tiempo total de identifiación cara: " << ttic << endl;
 	ofstream file_s; file_s.open("results.out", ofstream::app);
-	file_s << tt << " " << ttic <<  " " << (double (aciertos/data.tests)) << endl;
+	file_s << tt << " " << ttic <<  " " << (double ( (double) aciertos/ (double) data.tests)) << endl;
 	file_s.close();
 
 	delete[] buffer;

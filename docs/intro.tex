@@ -5,22 +5,16 @@
 %por ejemplo la de matriz simétrica). En vez de definiciones básicas es conveniente citar
 %ejemplos de bibliografía adecuada. Una cita vale más que mil palabras.
 %
-El objetivo principal de este informe es analizar el mecanismo de \emph{eigenfaces} para la identificación de personas 
-usando solo sus caras en tiempo real con una tasa de efectividad aceptable. El mismo requiere de un mínimo de caras de 
-entrenamiento iniciales (al menos una) por persona que se quiera identificar.
-La idea central de la identificación de caras consiste en calcular la matriz de covarianza de las imagenes de entrenamiento. 
-EXPLICAR PORQUE Y QUE ES LA MATRIZ DE COVARIANZA SIRVE, CERO DE PROBA. Una vez obtenida la matriz de covarianzas se hallan
-las componentes principales de dicha matriz para reducir la dimensión del espacio en que trabajermos y reducir los tiempos 
-de cómputo. Para esto es necesario hallar los autovalores de mayor módulo y sus autovectores asociados. Dichos autovalores 
-son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de 
-menor módulo contienen menos información y por lo tanto es más confiable descartalos sin perder efectividad al identificar 
-las caras. Para obtener los autovalores aproximados (y sus respectivos autovectores) de la matriz de covarianzas se utiliza 
-el método de la potencia con deflación. Este método arrastra error al calcular un nuevo autovalor, por lo que 
-no resulta práctico utilizarlo para calcular todos los autovalores, afortunadamente, solamente estamos interesados en 
-los primeros y más importantes.
-Una vez obtenidos los autovectores y autovalores, podemos calcular las primeras componentes de imagen vectorizada para 
-reducir la dimensión del espacio a trabajar.
-Por último hay que identificar las caras que vayan apareciendo en el sistema, para esto se vectoriza y normaliza la 
-imagen de la cara para posteriormente quedarnos con las primeras componentes de dicha imagen, y simplemente se utiliza 
-algún criterio basado en  distancias entre la imagen a identificar y el resto de las imagenes.
+El objetivo principal de este trabajo es desarrollar un método que nos permita identificar personas en tiempo real a partir de sus rostros con el máximo grado de efectividad posible.
+\newline
+\par
+\textbf{El enfoque utilizado es el propuesto en \cite{eigenfaces} cuya característica distintiva respecto de otros enfoques es que se basa en la teoría de la información.} Bajo el supuesto de que el reconocimiento facial puede hacerse a partir de fotografías 2-D, y contando con un conjunto inicial -que llamaremos de entrenamiento- de imágenes pertenecientes al universo de rostros que se pretende reconocer, el enfoque propone trabajar con una transformación de ese espacio que permita reducir su dimensionalidad considerablemente, conservando, a la vez, la capacidad de distinguir a los elementos que viven en él.
+\newline
+\par
+Primero se calcula la matriz de covarianza de las imagenes de entrenamiento. EXPLICAR PORQUE Y QUE ES LA MATRIZ DE COVARIANZA SIRVE, CERO DE PROBA. Una vez obtenida la matriz de covarianzas se hallana las componentes principales de dicha matriz para reducir la dimensión del espacio en que trabajermos y reducir los tiempos de cómputo. Para esto es necesario hallar los autovalores de mayor módulo y sus autovectores asociados. Dichos autovalores son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de menor módulo contienente menos información y por lo tanto es más confiable descartalos sin perder efectividad al identificar las caras.
+\newline
+Para obtener los autovalores aproximados (y sus respectivos autovectores) de la matriz de covarianzas se utiliza el método de la potencia combinado con deflación. Este método arrastra error al calcular un nuevo autovalor, por lo que no resulta práctico utilizarlo para calcular todos los autovalores, afortunadamente, solamente estamos interesados en los primeros y más importantes.
+Una vez obtenidos los autovectores y autovalores, podemos calcular las primeras componentes de imagen vectorizada para reducir la dimensión del espacio a trabajar.
+\newline
+Por último hay que identificar las caras que vayan apareciendo en el sistema, para esto se vectoriza y normaliza la imagen de la cara para posteriormente quedarnos con las primeras componentes de dicha imagen, y simplemente se utiliza algún criterio basado en  distancias entre la imagen a identificar y el resto de las imagenes.
 
