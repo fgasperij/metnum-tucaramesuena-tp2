@@ -29,30 +29,60 @@ rm -f tests/*.out
 rm -f tests/*.in
 rm -f results.out
 
-while getopts  "q:k:i:b:m:p:" arg
+while getopts  "q:k:i:b:m:p:h" arg
 do
 	case $arg in
 		q)
 			cantTests=$OPTARG
+			if [ $cantTests -le 0 ]
+			then
+				echo Cantidad de tests invalido
+				exit
+			fi
 			;;
 		k)
 			componentes=$OPTARG
+			if [ $componentess -le 0 ] || [ $componentes -ge 200 ]
+			then
+				echo Cantidad de componentes invalido
+				exit
+			fi
 			;;
 		imps)
 			imps=$OPTARG
+			if [ $imps -ge 11 ] || [ $imps -le 0 ]
+			then
+				echo Cantidad de imagenes por persona invalido
+				exit
+			fi
 			;;
 		base)
 			base=$OPTARG
+			if [ $base -ne 0 ] || [ $base -ne 1 ]
+			then
+				echo Base no valida
+				exit
+			fi
 			;;
 		met)
 			met=$OPTARG
+			if [ $met -ne 0 ] || [ $base -ne 1 ]
+			then
+				echo Metodo no valida
+				exit
+			fi
 			;;
 		p)
 			personas=$OPTARG
+			if [ $personas -le 0 ] || [ $personas -ge 42 ]
+			then
+				echo Cantidad de personas no valida
+				exit
+			fi
 			;;
+		h)
 	esac
 done
-
 
 
 printf "Creando nuevos tests "
