@@ -93,8 +93,8 @@ do
 			echo "IMPs = Imagenes por personas. Default = 41"
 			echo "Q = Cantidad de tests. Default = 5"
 			echo "BASE = Base de imagenes: 0 = 112x92 ** 1 = 28x23. Default = 0"
-			echo "MET = Metodo: 0 = Lento, 1 = Rapido."
-			echo "P = Cantidad de personas."
+			echo "MET = Metodo: 0 = Lento, 1 = Rapido. Default = Rapido"
+			echo "P = Cantidad de personas. Default = 41"
 			echo "c = Limpiar archivos."
 			exit
 			;;
