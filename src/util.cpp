@@ -1,7 +1,5 @@
 #include "util.h"
 
-
-
 /*** Mensajes pantalla ***/
 
 void msg_header()
@@ -21,8 +19,7 @@ void msg_parseo_falla(std::string msg)
 }
 
 void msg_modo_uso()
-{
-	//msg_header();
+{	
 	std::cout<<MAGENTA;
 	std::cout << "\n MODO DE USO:"<< std::endl;
 	std::cout << "\n ./tp2 <archivo entrada> <archivo salida> <m>" << std::endl;
@@ -37,7 +34,7 @@ void msg_modo_uso()
 
 int signo(double x)
 {
-	return ((x>0)?1:((x<0)?-1:0));
+	return ( (x>0) ? 1 : ((x<0) ? -1 : 0) );
 }
 
 bool es_par(int n)

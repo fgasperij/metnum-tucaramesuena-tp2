@@ -16,8 +16,9 @@ struct Autos{
 // Funciones miscelaneas.
 
 template<class T>
-void armarMatrizX(Matriz<T>& A, char * buffer, int fila){
-int cantColumnas = A.cantColumnas();
+void armarMatrizX(Matriz<T>& A, char * buffer, int fila)
+{
+	int cantColumnas = A.cantColumnas();
 	for(int j = 0; j < cantColumnas; j++){
 		A[fila][j] = (unsigned char) buffer[j];
 	}
@@ -194,6 +195,39 @@ int identificarCara(Matriz<T>& A, Matriz<T>& img, Data& data){
 	return sujeto;
 }
 
+template<class T>
+int identificarCaraConPromedio(Matriz<T>& A, Matriz<T>& img, Data& data){
+	T minimo = std::numeric_limits<std::streamsize>::max();
+	int sujeto = -1;
+	T distanciaPromedioASujeto[data.personas];
+	for (int k = 0; k < data.personas; k++) {
+		distanciaPromedioASujeto[k] = 0;
+	}
+
+	for(int i = 0; i < data.personas; i++){
+		T distancia;
+		Matriz<T> vec_dist;
+		Matriz<T> prom (1, data.componentes);
+		for(int j = 0; j < data.imagenes; j++){
+			Matriz<T> muestra = dameFila(A,i*data.imagenes+j);
+			muestra*(-1);
+			vec_dist = img;
+			vec_dist + muestra;
+			distancia = calcularNorma(vec_dist);
+			distanciaPromedioASujeto[i] += distancia;			
+		}
+	}
+
+
+	for(int k = 0; k < data.personas; k++) {
+		distanciaPromedioASujeto[k] = distanciaPromedioASujeto[k]/data.imagenes;
+		if (distanciaPromedioASujeto[k] < minimo) {
+			minimo = distanciaPromedioASujeto[k];
+			sujeto = k+1;
+		}
+	}
+	return sujeto;
+}
 // Cargo una matriz
 template<class T>
 void cargarMatriz(Matriz<T>& A, char * buffer){

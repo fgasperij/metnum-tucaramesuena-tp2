@@ -17,14 +17,16 @@
 // Funciones de entrada salida pare leer y escribir datos en archivos.
 // Siempre tratar de usar >> para eliminar los espacios.
 
-void setearPrecision(ostream& os, int prec){
+void setearPrecision(ostream& os, int prec)
+{
 	os.setf(ios::fixed, ios::floatfield);
 	os.precision(prec);
 }
 
 // Cuento los caracteres hasta el primer espacio ESPACIO, y restauro el stream.
-int contarCaracteres(ifstream& ifs){
-	ifs.ignore(std::numeric_limits<std::streamsize>::max(),ESPACIO);
+int contarCaracteres(ifstream& ifs)
+{
+	ifs.ignore(std::numeric_limits<std::streamsize>::max(), ESPACIO);
 	int res = ifs.gcount();
 	for(int i = 0; i < res; i++){ifs.unget();}
 
@@ -39,12 +41,14 @@ void ignorarHastaCaracter(ifstream& ifs, int cantidad, char c){
 }
 
 // Ignoro cantidad lineas.
-void ignorarLineas(ifstream& ifs, int cantidad = 1){
+void ignorarLineas(ifstream& ifs, int cantidad = 1)
+{
 	ignorarHastaCaracter(ifs, cantidad, ENTER);
 }
 
 // Copio hasta el caracter c en el buffer.
-void obtenerHastaCaracter(ifstream& ifs, char * buffer, char c){
+void obtenerHastaCaracter(ifstream& ifs, char * buffer, char c)
+{
 	ifs.get(buffer, std::numeric_limits<std::streamsize>::max(), c);	
 }
 
@@ -75,9 +79,10 @@ void escribirPGM(const char*  file, Data& data, char * buffer){
 //Lee los datos basios del archivo. La primer linea.
 void leerDatosBasicos(const char* file, Data& data){
 
-ifstream file_s; file_s.open(file);
+	ifstream file_s; file_s.open(file);
 
-	// Cuento los caracteres del nombre de la carpeta donde estan las imagenes, creo un buffer con ese tamanio, y lo copio a data.
+	// Cuento los caracteres del nombre de la carpeta donde estan las imagenes, 
+	// creo un buffer con ese tamanio, y lo copio a data.
 	int long_base = contarCaracteres(file_s);
 	char buffer[long_base];
 	obtenerHastaCaracter(file_s, buffer, ESPACIO);

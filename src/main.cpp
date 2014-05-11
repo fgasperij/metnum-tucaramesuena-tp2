@@ -66,7 +66,9 @@ int main(int argc, char **argv)
 
 	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
 
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
+	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK 
+	// Observacion: La correctitud de los resultados depende de la cantidad de 
+	// iteraciones.
 
 	// Metodo alternativo -- IMPLEMENTADO -- OK
 		
@@ -92,7 +94,7 @@ int main(int argc, char **argv)
 	if(buffer == NULL){cerr << "Puntero del buffer nulo " << endl; return -1;}
 
 
-	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
+	// Leo todas las imagenes de todas las personas y armo la matriz X del enunciado.
 	for(int i = 0; i < data.personas; i++){
 		for(int j = 0; j < data.imagenes; j++){
 			leerDatosAvanzados(file_in, data, i, j, buffer);
@@ -113,16 +115,13 @@ int main(int argc, char **argv)
 		At.transponer();
 		// P = A'*A
 		Matriz<double> P = At*A;
-
 		// CALCULO DE TIEMPO
 		init_time();
-
-		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
-
+		// Calculo autovectores (o componentes principales) y autovalores. 
+		// La V del enunciado.
 		autos = calcularAuto(P, data.componentes);
 		tt += get_time();
-	}
-	else{
+	} else {
 		// At = A'
 		Matriz<double> At = A;
 
@@ -174,22 +173,22 @@ int main(int argc, char **argv)
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
 		// Identificando... segun el paper.
-		int identificado = identificarCara(TC, TCIMG, data);
+		// int identificado = identificarCara(TC, TCIMG, data);
+		int identificado = identificarCaraConPromedio(TC, TCIMG, data);
 
 		ttic += get_time();
 
-		// IDENTIFICAR SUJETO;
-		if(identificado == sujeto){
+//		// IDENTIFICAR SUJETO;
+//		if(identificado == sujeto){
 //			cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;
-		}
-		else{
+//		} else {
 //			cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; 
-		fallos++;
-		}
+//			fallos++;
+//		}
 
 	}
 	ttic /= data.tests;
-	cout << "Aciertos: " << (data.tests - fallos) << endl << "Fallos: "  << fallos << endl;
+	cout << "Aciertos: " << data.tests - fallos << endl << "Fallos: "  << fallos << endl;
 
 	// Escribo los valores singulares en el archivo de salida.
 	Matriz<double> vs (data.componentes, 1);
@@ -203,7 +202,7 @@ int main(int argc, char **argv)
 //	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
 //	cout << "Tiempo total de identifiación cara: " << ttic << endl;
 	ofstream file_s; file_s.open("results.out", ofstream::app);
-	file_s << tt << " " << ttic <<  " " << ((double) ((double) aciertos / (double) data.tests)) << endl;
+	file_s << tt << " " << ttic <<  " " << (double (aciertos/data.tests)) << endl;
 	file_s.close();
 
 	delete[] buffer;
