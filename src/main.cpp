@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 		return -1;		
 	}
 
+<<<<<<< .merge_file_PqSemP
 /*** Face Recognition ***/
 
 	
@@ -78,6 +79,8 @@ int main(int argc, char **argv)
 
 	// Identificar sujetos --- IMPLEMENTADO -- OK
 
+=======
+>>>>>>> .merge_file_w5gmHX
 
 	char* file_in = argv[1]; char* file_out = argv[2];
 	int metod = atoi(argv[3]);
@@ -93,12 +96,16 @@ int main(int argc, char **argv)
 	char * buffer = new char [m];
 	if(buffer == NULL){cerr << "Puntero del buffer nulo " << endl; return -1;}
 
+<<<<<<< .merge_file_PqSemP
 
 	// Leo todas las imagenes de todas las personas y armo la matriz X del enunciado.
+=======
+	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
+>>>>>>> .merge_file_w5gmHX
 	for(int i = 0; i < data.personas; i++){
 		for(int j = 0; j < data.imagenes; j++){
 			leerDatosAvanzados(file_in, data, i, j, buffer);
-			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras
+			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras			
 			count++;
 		}
 	}

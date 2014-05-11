@@ -2,10 +2,10 @@
 
 #Modo de uso= ./tests.sh
 
-cantTests=15
+cantTests=5
 componentes=15
 personas=41
-imps=9
+imps=5
 imgGrande=0
 imgChica=1
 metRapido=1
@@ -17,13 +17,13 @@ python metnum.py build
 #Borro resultados anteriores
 rm -f tests/*.out
 rm -f tests/*.in
-rm -f *.out
+rm -f results.out
 
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
 	printf "."
-	./genTest.py tests/test$i.in $imgGrande $imps $componentes $personas $i
+	./genTest.py -o tests/test$i.in -base $imgGrande -imps $imps -k $componentes -p $personas -s $i
 done
 
 echo
@@ -51,15 +51,15 @@ do
 
 	    if [ $index -eq 0 ]
 	    then
-	   	 tt=$(echo "$tt+$x" | bc)
+	   	 tt=$(echo "$tt+$x" | bc -l)
 	    fi
 	    if [ $index -eq 1 ]
 	    then
-	 	   ttic=$(echo "$ttic+$x" | bc)
+	 	   ttic=$(echo "$ttic+$x" | bc -l)
 	    fi
 	    if [ $index -eq 2 ]
 	    then
-	   	 ta=$(echo "$ta+$x" | bc)
+	   	 ta=$(echo "$ta+$x" | bc -l)
 	    fi
 	    index=$(($index+1))
 	    if [ $index -eq 3 ]
@@ -70,9 +70,9 @@ do
 	IFS=$OIFS    
 done <results.out    
 
-tt=$(echo "$tt/$cantTests" | bc)
-ttic=$(echo "$ttic/$cantTests" | bc)
-ta=$(echo "$ta/$cantTests" | bc)
+tt=$(echo "$tt/$cantTests" | bc -l | awk '{printf "%f", $0}')
+ttic=$(echo "$ttic/$cantTests" | bc -l | awk '{printf "%f", $0}')
+ta=$(echo "$ta/$cantTests" | bc -l | awk '{printf "%f", $0}')
 
 # Tiempo de ejecucion metodo potencia y demases
 echo $tt
@@ -82,4 +82,3 @@ echo $ttic
 echo
 # Tasa de aciertos.
 echo $ta
-

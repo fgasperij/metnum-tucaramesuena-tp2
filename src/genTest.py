@@ -4,6 +4,8 @@
 from sys import argv
 from random import randint
 from random import seed
+import argparse
+
 
 #Parametro 1 = Archivo de salida.
 #Parametro 2 = Base	** 0 = 112x92	** 1 = 28x23
@@ -12,27 +14,34 @@ from random import seed
 #Parametro 5 = Cantidad de personas.
 # Parametro 6 (opcional) = Semilla, si no se proporciona ninguna, la semilla es "aleatoria", por lo que cada llamada al programa arrojará diferentes instancias
 def main(arg = argv):
-	if(len(arg) < 7):
-		seed()
-	else:
-		seed( int(arg[6]) )
+	parser = argparse.ArgumentParser(description="Archivo generador de tests")
+	parser.add_argument("-base", help="Base de imagenes a procesar: 0 = 112x92, 1 = 28x23, default=0", type=int, default=0)
+	parser.add_argument("-imps", help="Cantidad de imagenes por persona, default=5", type=int, default=5)
+	parser.add_argument("-p", help="Cantidad de personas, default=41", type=int, default=41)
+	parser.add_argument("-s", help="Semilla del random, default=undefined", type=int, default=seed())
+	parser.add_argument("-k", help="Cantidad de componentes, default=15", type=int, default=15)
+	parser.add_argument("-o", help="Archivo de salida, default=test.in", type=str, default="test.in")
+
+	args = parser.parse_args()
 
 	# start y end = comienzo y final del intervalo del random respectivamente
 	start_ipp = 0
 	end_ipp = 9
 	
+	if(args.s != None):
+		seed(args.s)
 
 	start_pers = 0
 	end_pers = 40
 
-	imps = int(arg[3]);
-	componentes = int(arg[4]);
-	personas = int(arg[5]);
+	imps = args.imps;
+	componentes = args.k;
+	personas = args.p;
 	
 	m = 0
 	n = 0
 	path = ""
-	if(argv[2] == 0):
+	if( args.base == 0):
 		m = 112
 		n = 92
 		path = "../data/ImagenesCaras/"
@@ -41,7 +50,7 @@ def main(arg = argv):
 		n = 23
 		path = "../data/ImagenesCarasRed/"
 
-	f = open(arg[1], 'w')
+	f = open(args.o, 'w')
 	f.write(  path )
 	f.write(" ")
 	f.write(  str(m) )
@@ -58,13 +67,15 @@ def main(arg = argv):
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
 	Matriz = [[0 for x in xrange(end_ipp+1)] for x in xrange(end_pers+1)]
-
+	#Orden relativo de las personas.
+	orden = [0 for x in xrange(end_pers+1)]
 	for j in range( personas ):
 	
 		pers = randint(start_pers, end_pers)
 		while(Matriz[pers][imps] == 1):
 			pers = randint(start_pers, end_pers)
 		
+		orden[pers] = j+1
 		f.write("s")
 		f.write(str(pers+1))
 		f.write("/")
@@ -101,7 +112,8 @@ def main(arg = argv):
 				f.write( str(i+1) )
 				f.write("/")
 				f.write( str(j+1) )
-				f.write(".pgm")
+				f.write(".pgm ")
+				f.write( str(orden[i]) )
 				f.write("\n")
 
 
