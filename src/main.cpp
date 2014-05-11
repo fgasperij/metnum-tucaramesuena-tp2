@@ -55,27 +55,6 @@ int main(int argc, char **argv)
 		return -1;		
 	}
 
-/*** Face Recognition ***/
-
-	
-	// ESTADO ACTUAL:
-	
-	// Entrada/Salida -- IMPLEMENTADO -- OK
-
-	// Armado de matriz -- IMPLEMENTADO -- OK
-
-	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
-
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK Observacion: La correctitud de los resultadods depende de la cantidad de iteraciones.
-
-	// Metodo alternativo -- IMPLEMENTADO -- OK
-		
-	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - OK
-	
-	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - OK
-
-	// Identificar sujetos --- IMPLEMENTADO -- OK
-
 
 	char* file_in = argv[1]; char* file_out = argv[2];
 	int metod = atoi(argv[3]);
@@ -91,12 +70,11 @@ int main(int argc, char **argv)
 	char * buffer = new char [m];
 	if(buffer == NULL){cerr << "Puntero del buffer nulo " << endl; return -1;}
 
-
 	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
 	for(int i = 0; i < data.personas; i++){
 		for(int j = 0; j < data.imagenes; j++){
 			leerDatosAvanzados(file_in, data, i, j, buffer);
-			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras
+			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras			
 			count++;
 		}
 	}

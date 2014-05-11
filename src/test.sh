@@ -2,7 +2,7 @@
 
 #Modo de uso= ./tests.sh
 
-cantTests=1
+cantTests=10
 componentes=15
 personas=41
 imps=5
@@ -23,7 +23,7 @@ printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
 	printf "."
-	./genTest.py tests/test$i.in $imgChica $imps $componentes $personas $i
+	./genTest.py tests/test$i.in $imgGrande $imps $componentes $personas $i
 done
 
 echo
