@@ -2,7 +2,7 @@
 
 #Modo de uso= ./tests.sh
 
-cantTests=10
+cantTests=5
 componentes=15
 personas=41
 imps=5
@@ -17,13 +17,13 @@ python metnum.py build
 #Borro resultados anteriores
 rm -f tests/*.out
 rm -f tests/*.in
-rm -f *.out
+rm -f results.out
 
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
 	printf "."
-	./genTest.py tests/test$i.in $imgGrande $imps $componentes $personas $i
+	./genTest.py -o tests/test$i.in -base $imgGrande -imps $imps -k $componentes -p $personas -s $i
 done
 
 echo
