@@ -15,11 +15,11 @@ import argparse
 # Parametro 6 (opcional) = Semilla, si no se proporciona ninguna, la semilla es "aleatoria", por lo que cada llamada al programa arrojará diferentes instancias
 def main(arg = argv):
 	parser = argparse.ArgumentParser(description="Archivo generador de tests")
-	parser.add_argument("-base", help="Base de imagenes a procesar: 0 = 112x92, 1 = 28x23, default=0", type=int, default=0)
-	parser.add_argument("-imps", help="Cantidad de imagenes por persona, default=5", type=int, default=5)
-	parser.add_argument("-p", help="Cantidad de personas, default=41", type=int, default=41)
+	parser.add_argument("-base", help="Base de imagenes a procesar: 0 = 112x92, 1 = 28x23, default=0", type=int, default=0, choices=[0, 1])
+	parser.add_argument("-imps", help="Cantidad de imagenes por persona, default=5", type=int, default=5, choices=range(1,11))
+	parser.add_argument("-p", help="Cantidad de personas, default=41", type=int, default=41, choices=range(1,42))
 	parser.add_argument("-s", help="Semilla del random, default=undefined", type=int, default=seed())
-	parser.add_argument("-k", help="Cantidad de componentes, default=15", type=int, default=15)
+	parser.add_argument("-k", help="Cantidad de componentes, default=15", type=int, default=15, choices=range(1,200))
 	parser.add_argument("-o", help="Archivo de salida, default=test.in", type=str, default="test.in")
 
 	args = parser.parse_args()
@@ -28,6 +28,8 @@ def main(arg = argv):
 	start_ipp = 0
 	end_ipp = 9
 	
+#	if(args.base != 0 || args.base !)
+
 	if(args.s != None):
 		seed(args.s)
 
@@ -66,13 +68,13 @@ def main(arg = argv):
 
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
-	Matriz = [[0 for x in xrange(end_ipp+1)] for x in xrange(end_pers+1)]
+	Matriz = [[0 for x in xrange(end_ipp+2)] for x in xrange(end_pers+1)]
 	#Orden relativo de las personas.
-	orden = [0 for x in xrange(end_pers+1)]
+	orden = [0 for x in range(end_pers+1)]
 	for j in range( personas ):
 	
 		pers = randint(start_pers, end_pers)
-		while(Matriz[pers][imps] == 1):
+		while(Matriz[pers][imps+1] == 1):
 			pers = randint(start_pers, end_pers)
 		
 		orden[pers] = j+1
@@ -90,11 +92,11 @@ def main(arg = argv):
 
 		f.write("\n")
 
-		Matriz[pers][imps] = 1
+		Matriz[pers][imps+1] = 1
 	
 	
 
-# En principio testeo con todas las imagenes que no estan cargadas, quizas despues de pueda parametrizar.
+# En principio testeo con todas las imagenes que no estan cargadas, quizas despues se pueda parametrizar.
 	restantes = 0
 	for i in range(end_pers+1):
 		for j in range(end_ipp+1):

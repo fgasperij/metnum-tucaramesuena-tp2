@@ -1,7 +1,14 @@
 #!/bin/bash
 
-#Modo de uso= ./tests.sh
+#Modo de uso= ./tests.sh [-q Q] [-k K] [-i IMPS] [-b BASE] [-m MET] [-p P]
+# K = Cantidad de components.
+# IMPs = Imagenes por persona.
+# Q = Cantidad de tests.
+# BASE = Base de imagenes: 0 = 112x92 ** 1 = 28x23. Default = 0
+# MET = Metodo: 0 = Lento, 1 = Rapido.
+# P = Cantidad de personas
 
+#Valores default:
 cantTests=5
 componentes=15
 personas=41
@@ -10,6 +17,9 @@ imgGrande=0
 imgChica=1
 metRapido=1
 metLento=0
+met=$metRapido
+base=$imgGrande
+
 
 #Compilo
 python metnum.py build
@@ -19,11 +29,37 @@ rm -f tests/*.out
 rm -f tests/*.in
 rm -f results.out
 
+while getopts  "q:k:i:b:m:p:" arg
+do
+	case $arg in
+		q)
+			cantTests=$OPTARG
+			;;
+		k)
+			componentes=$OPTARG
+			;;
+		imps)
+			imps=$OPTARG
+			;;
+		base)
+			base=$OPTARG
+			;;
+		met)
+			met=$OPTARG
+			;;
+		p)
+			personas=$OPTARG
+			;;
+	esac
+done
+
+
+
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
 	printf "."
-	./genTest.py -o tests/test$i.in -base $imgGrande -imps $imps -k $componentes -p $personas -s $i
+	./genTest.py -o tests/test$i.in -base $base -imps $imps -k $componentes -p $personas -s $i
 done
 
 echo
@@ -33,7 +69,7 @@ echo
 for((i=1; i < $cantTests+1; i++))
 do
 	echo "Corriendo test $i "
-	./tp tests/test$i.in tests/test$i.out $metRapido
+	./tp tests/test$i.in tests/test$i.out $met
 done
 
 tt=0
