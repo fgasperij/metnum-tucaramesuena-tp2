@@ -29,7 +29,7 @@ rm -f tests/*.out
 rm -f tests/*.in
 rm -f results.out
 
-while getopts  "q:k:i:b:m:p:h:c" arg
+while getopts  "q:k:i:b:m:p:hc" arg
 do
 	case $arg in
 		q)
