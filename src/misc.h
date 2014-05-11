@@ -78,7 +78,7 @@ void metoPotencia(Matriz<T>& A, Matriz<T>& autovectores, Matriz<T>& autovalores,
 	for(int i = 0; i < PITER; i++){
 		v = A*v;
 		n = calcularNorma(v);
-		v*(1/calcularNorma(v));
+		v*(1/n);
 	}
 
 	for(int i = 0; i < cantFilas; i++){

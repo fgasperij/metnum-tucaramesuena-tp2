@@ -1,0 +1,9 @@
+\subsection{Comparación de la complejidad de los métodos}
+El método 1 trabaja con la matriz $AA^t$ y el método 2 trabaja con la matriz $A^tA$.
+La matriz $A\in\mathbb{R}^{n \times m}$ con $m = pixels(img)$ y $n = nimgp * \#personas$. Por lo tanto $A^t\in\mathbb{R}^{m \times n}$.
+Por lo tanto tenemos que $AA^t\in\mathbb{R}^{n \times n}$ y $A^tA\in\mathbb{R}^{m \times m}$.
+
+En el \'unico punto que divergen los algoritmos es en el c\'alculo de los $k$ mayores autovalores, y sus
+autovectores asociados, de $M_x = A^tA$, la matriz de covarianza. 
+El m\'etodo 1 aplica el m\'etodo de la potencia con deflaci\'on directamente sobre la matriz $M_x$. 
+El m\'etodo 2 primero aplica el m\'etodo de la potencia sobre la matriz $M^t_x = AA^t$. Luego
