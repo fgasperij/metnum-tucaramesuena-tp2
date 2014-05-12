@@ -15,6 +15,7 @@ void msg_header();
 void msg_footer();
 void msg_modo_uso();
 void msg_parseo_falla(std::string);
+void my_handler(int s);
 
 /*** Aritméticas ***/
 int signo(double x);
