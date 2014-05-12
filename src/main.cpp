@@ -201,7 +201,8 @@ int main(int argc, char **argv)
 //	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
 //	cout << "Tiempo total de identifiación cara: " << ttic << endl;
 	ofstream file_s; file_s.open("results.out", ofstream::app);
-	file_s << tt << " " << ttic <<  " " << (double ( (double) aciertos/ (double) data.tests)) << endl;
+	// file_s << tt << " " << ttic <<  " " << (double ( (double) aciertos/ (double) data.tests)) << endl;
+	file_s << (double ( (double) aciertos/ (double) data.tests)) << endl;
 	file_s.close();
 
 	delete[] buffer;
