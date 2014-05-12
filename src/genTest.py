@@ -115,7 +115,7 @@ def main(arg = argv):
 				f.write("/")
 				f.write( str(j+1) )
 				f.write(".pgm ")
-				f.write( str(orden[i]) )
+				f.write( str(i+1) ) #f.write( str(orden[i]) )
 				f.write("\n")
 
 
