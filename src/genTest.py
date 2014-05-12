@@ -27,8 +27,6 @@ def main(arg = argv):
 	# start y end = comienzo y final del intervalo del random respectivamente
 	start_ipp = 0
 	end_ipp = 9
-	
-#	if(args.base != 0 || args.base !)
 
 	if(args.s != None):
 		seed(args.s)
@@ -68,7 +66,7 @@ def main(arg = argv):
 
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
-	Matriz = [[0 for x in xrange(end_ipp+2)] for x in xrange(end_pers+1)]
+	Matriz = [[0 for x in range(end_ipp+2)] for x in range(end_pers+1)]
 	#Orden relativo de las personas.
 	orden = [0 for x in range(end_pers+1)]
 	for j in range( personas ):
