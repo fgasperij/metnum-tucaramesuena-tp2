@@ -105,16 +105,17 @@ def main(arg = argv):
 	f.write("\n")
 
 	for i in range(end_pers+1):
-		for j in range(end_ipp+1):
-			if(Matriz[i][j] == 0):
-				f.write(path)
-				f.write("s")
-				f.write( str(i+1) )
-				f.write("/")
-				f.write( str(j+1) )
-				f.write(".pgm ")
-				f.write( str(orden[i]) )
-				f.write("\n")
+		if(Matriz[i][imps+1] == 1):
+			for j in range(end_ipp+1):
+				if(Matriz[i][j] == 0):
+					f.write(path)
+					f.write("s")
+					f.write( str(i+1) )
+					f.write("/")
+					f.write( str(j+1) )
+					f.write(".pgm ")
+					f.write( str(orden[i]) )
+					f.write("\n")
 
 
 	f.close()
