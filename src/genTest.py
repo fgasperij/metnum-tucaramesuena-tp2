@@ -97,9 +97,10 @@ def main(arg = argv):
 # En principio testeo con todas las imagenes que no estan cargadas, quizas despues se pueda parametrizar.
 	restantes = 0
 	for i in range(end_pers+1):
-		for j in range(end_ipp+1):
-			if(Matriz[i][j] == 0):
-				restantes += 1
+		if(Matriz[i][imps+1] == 1):
+			for j in range(end_ipp+1):
+				if(Matriz[i][j] == 0):
+					restantes += 1
 
 	f.write( str(restantes) )
 	f.write("\n")
