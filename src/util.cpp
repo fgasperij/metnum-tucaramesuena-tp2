@@ -1,6 +1,13 @@
 #include "util.h"
+#include "signal.h"
 
 /*** Mensajes pantalla ***/
+
+void my_handler(int s){
+           std::cout<<ENDCOLOR<<std::endl;
+           exit(0); 
+
+}
 
 void msg_header()
 {

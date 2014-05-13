@@ -27,8 +27,6 @@ def main(arg = argv):
 	# start y end = comienzo y final del intervalo del random respectivamente
 	start_ipp = 0
 	end_ipp = 9
-	
-#	if(args.base != 0 || args.base !)
 
 	if(args.s != None):
 		seed(args.s)
@@ -68,13 +66,14 @@ def main(arg = argv):
 
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
-	Matriz = [[0 for x in xrange(end_ipp+2)] for x in xrange(end_pers+1)]
+	Matriz = [[0 for x in range(end_ipp+2)] for x in range(end_pers+1)]
 	#Orden relativo de las personas.
 	orden = [0 for x in range(end_pers+1)]
+
 	for j in range( personas ):
 	
 		pers = randint(start_pers, end_pers)
-		while(Matriz[pers][imps+1] == 1):
+		while(Matriz[pers][end_ipp+1] == 1):
 			pers = randint(start_pers, end_pers)
 		
 		orden[pers] = j+1
@@ -92,31 +91,34 @@ def main(arg = argv):
 
 		f.write("\n")
 
-		Matriz[pers][imps+1] = 1
+		Matriz[pers][end_ipp+1] = 1
 	
 	
 
 # En principio testeo con todas las imagenes que no estan cargadas, quizas despues se pueda parametrizar.
 	restantes = 0
 	for i in range(end_pers+1):
-		for j in range(end_ipp+1):
-			if(Matriz[i][j] == 0):
-				restantes += 1
+		if(Matriz[i][end_ipp+1] == 1):
+			for j in range(end_ipp+1):
+				if(Matriz[i][j] == 0):
+					restantes += 1
 
 	f.write( str(restantes) )
 	f.write("\n")
 
 	for i in range(end_pers+1):
-		for j in range(end_ipp+1):
-			if(Matriz[i][j] == 0):
-				f.write(path)
-				f.write("s")
-				f.write( str(i+1) )
-				f.write("/")
-				f.write( str(j+1) )
-				f.write(".pgm ")
-				f.write( str(orden[i]) )
-				f.write("\n")
+		if(Matriz[i][end_ipp+1] == 1):
+			for j in range(end_ipp+1):
+				if(Matriz[i][j] == 0):
+						
+					f.write(path)
+					f.write("s")
+					f.write( str(i+1) )
+					f.write("/")
+					f.write( str(j+1) )
+					f.write(".pgm ")
+					f.write( str(orden[i]) )
+					f.write("\n")
 
 
 	f.close()

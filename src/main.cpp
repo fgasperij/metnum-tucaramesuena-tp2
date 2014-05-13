@@ -16,9 +16,18 @@
 #include "misc.h"
 #include "display.h"
 #include "time.h"
+#include "signal.h"
 
 int main(int argc, char **argv)
 {
+
+	/*** Para evitar que se cambie el color al salir con Ctrl+C u otros ***/
+	struct sigaction sigIntHandler;
+	sigIntHandler.sa_handler = my_handler;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0;
+	sigaction(SIGINT, &sigIntHandler, NULL);
+
 	msg_header();
 
 /*** Reading parameters from command line ***/  
@@ -172,7 +181,7 @@ int main(int argc, char **argv)
 
 		// Identificando... segun el paper.
 		// int identificado = identificarCara(TC, TCIMG, data);
-		int identificado = identificarCara(TC, TCIMG, data);
+		int identificado = identificarCaraConPromedio(TC, TCIMG, data);
 
 		ttic += get_time();
 
