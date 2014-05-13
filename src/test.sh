@@ -9,8 +9,8 @@
 # P = Cantidad de personas
 
 #Valores default:
-cantTests=5
-componentes=15
+cantTests=10
+componentes=20
 personas=41
 imps=5
 imgGrande=0
@@ -42,13 +42,13 @@ do
 			;;
 		k)
 			componentes=$OPTARG
-			if [ $componentess -le 0 ] || [ $componentes -ge 200 ]
+			if [ $componentes -le 0 ] || [ $componentes -ge 200 ]
 			then
 				echo Cantidad de componentes invalido
 				exit
 			fi
 			;;
-		imps)
+		i)
 			imps=$OPTARG
 			if [ $imps -ge 11 ] || [ $imps -le 0 ]
 			then
@@ -56,7 +56,7 @@ do
 				exit
 			fi
 			;;
-		base)
+		b)
 			base=$OPTARG
 			if [ $base -ne 0 ] || [ $base -ne 1 ]
 			then
@@ -64,7 +64,7 @@ do
 				exit
 			fi
 			;;
-		met)
+		m)
 			met=$OPTARG
 			if [ $met -ne 0 ] || [ $base -ne 1 ]
 			then
