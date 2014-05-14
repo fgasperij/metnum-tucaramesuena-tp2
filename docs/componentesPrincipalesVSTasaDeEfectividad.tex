@@ -1,11 +1,11 @@
 \subsubsection{Cantidad de componentes princiaples vs tasa de efectividad}
-El objetivo de la siguiente experimentación es analizar como afecta el n\'umero de componentes principales utilizado a la tasa de efectividad
-que obtenemos al identificar sujetos. Las variables a considerar son: 
-personas = 40
-sujetos a identificar = 1 imagen por persona
-resolución = 112x92
-componentes= 1-70 +3
-5 al azar por cada componente principal y después tomo el promedio
-3 caras, 6 caras, 9 caras
-
-Con un método de identificación y con el otro.
+El objetivo de la siguiente experimentación es analizar cómo afecta el número de componentes principales utilizado a la tasa de efectividad
+que obtenemos al identificar sujeto. Cuantas más componentes principales tomamos más información tenemos. Sin embargo, los autovalores que tomamos
+son siempre los de mayor valor absoluto, es decir, los que más información reflejan. Por lo tanto es de esperar que cada componente principal que agregamos
+nos aporta menos información que el anterior. Además, el método de la potencia con deflación arrastra error, esto implica que la exactitud de los autovalores 
+obtenidos es cada vez menor $exactitud(\lambda_i) > exactitud(\lambda_{i+1}$.
+Para la experimentación vamos a mantener la cantidad de sujetos, $40$, y la resolución de las imágenes, $112 \times 92$, constantes. El análisis lo vamos
+a realizar considerando componentes hasta 45 partiendo de una sola y aumentando de a 3. Los tests se correrán tomando $nimgp = 3, 6, 9$ caras de entrenamiento. Para cada
+combinación de $k$ y $nimgp$
+sujetos a identificar = restantes
+10 al azar por cada componente principal y después tomo el promedio
