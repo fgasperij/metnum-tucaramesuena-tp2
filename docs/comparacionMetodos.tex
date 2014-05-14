@@ -1,7 +1,7 @@
 \subsection{Comparación de la complejidad de los métodos}
 El método 1 trabaja con la matriz $AA^t$ y el método 2 trabaja con la matriz $A^tA$.
-La matriz $A\in\mathbb{R}^{n \times m}$ con $m = pixels(img)$ y $n = nimgp * \#personas$. Por lo tanto $A^t\in\mathbb{R}^{m \times n}$.
-Por lo tanto tenemos que $AA^t\in\mathbb{R}^{n \times n}$ y $A^tA\in\mathbb{R}^{m \times m}$.
+La matriz $A\in\mathbb{R}^{n \times m}$ con $m = pixels(img)$ y $n = nimgp \times \#personas$. Por lo tanto como $A^t\in\mathbb{R}^{m \times n}$ nos
+queda que $AA^t\in\mathbb{R}^{n \times n}$ y $A^tA\in\mathbb{R}^{m \times m}$.
 
 En el \'unico punto que divergen los algoritmos es en el c\'alculo de los $k$ mayores autovalores, y sus
 autovectores asociados, de $M_x = A^tA$, la matriz de covarianza. 
@@ -9,6 +9,7 @@ El m\'etodo 1 aplica el m\'etodo de la potencia con deflaci\'on directamente sob
 El m\'etodo 2 primero aplica el m\'etodo de la potencia sobre la matriz $M^t_x = AA^t$ y después realiza un despeje para obtener los 
 autovalores y autovectores de $M_x$. 
 Por lo tanto tenemos que los dos métodos utilizan la misma función para calcular autovectores y autovalores:
+\newpage
 \begin{algorithm}
 \caption{calcularAutovaloresYAutovectores(Matriz $A$)}
 \label{pseudo:calcularAutovaloresYAutovectores}
@@ -19,9 +20,7 @@ Por lo tanto tenemos que los dos métodos utilizan la misma función para calcul
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-
-y el método 2 además utiliza una función para despejar
-
+y el método 2 además utiliza una función para despejar:
 \begin{algorithm}
 \caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
 \label{pseudo:despejar}
@@ -29,29 +28,74 @@ y el método 2 además utiliza una función para despejar
   \STATE $u$ = $v\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}$   
 \end{algorithmic}
 \end{algorithm}
-
 por lo tanto la complejidad del método 1 es (abusando de la notación asintótica):
-
 \begin{displaymath}
-  O(m1) = k (O(metodoDeLaPotencia) + O(deflacionar))
+  O(metodo1) = k (O(metodoDeLaPotencia) + O(deflacionar))
 \end{displaymath}
-
 y del método 2:
-
 \begin{displaymath}
-  O(m1) = k (O(metodoDeLaPotencia) + O(deflacionar)) + k O(despejar)
+  O(metodo2) = k (O(metodoDeLaPotencia) + O(deflacionar)) + k O(despejar)
 \end{displaymath}
-
 La complejidad del método de la potencia es:
-
 \begin{displaymath}
-  O(m1) = iter (O(Ax) + O(\frac{y}{{\parallel}y{\parallel}}))
+  O(metodoDeLaPotencia) = iter (O(Ax) + O(\frac{y}{{\parallel}y{\parallel}}))
+\end{displaymath}
+$A\in\mathbb{R}^{n \times n}$ y $x\in\mathbb{R}^n$ entonces:
+\begin{displaymath}
+  O(Ax) = n(n \times mult + (n-1) \times sums) = (n^2)\times mult + n(n-1)\times sums = O(n^2)
+\end{displaymath}
+Si $y\in\mathbb{R}^n \Rightarrow \frac{y}{\parallel y \parallel} = O(n)$ por lo tanto reemplazando por lo nuevos valores: 
+\begin{displaymath}
+  O(metodoDeLaPotencia) = iter(O(n^2) + O(n)) = iterO(n^2) = O(n^2)
+\end{displaymath}
+porque $iter$ es un valor fijo que elegimos de antemano. La complejidad de aplicar deflacionar con
+$v_i\in\mathbb{R}^n$ y $A\in\mathbb{R}^{n \times n}$ es:
+\begin{displaymath}
+  O(deflacionar) = O(A-\lambda{v_1}v_1^t) = n^2 \times restas + O(\lambda_i{v_i}v_i^t) 
+\end{displaymath}
+seguimos reemplazando:
+\begin{displaymath}
+n^2 \times restas + n^2 \times mults + O(v_i{v_i^t}) = n^2 \times restas + n^2 \times mults + n^2 \times mults
+\end{displaymath}
+entonces nos queda que:
+\begin{displaymath}
+ O(deflacionar) = n^2 \times restas + 2n^2 \times mults = O(n^2) 
+\end{displaymath}
+Por lo tanto la complejidad del método 1 queda de la siguiente forma:
+\begin{displaymath}
+O(metodo1) = k (O(metodoDeLaPotencia) + O(deflacionar)) = k(O(n^2) + O(n^2)) = O(n^2) 
+\end{displaymath}
+y la complejidad del método 2 es:
+\begin{displaymath}
+O(metodo2) = O(metodo1) + O(despejar)
+\end{displaymath}
+Y la complejidad de despejar la planteamos como:
+\begin{displaymath}
+O(despejar) = O(\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}v)
+\end{displaymath}
+con $v_\in\mathbb{R}^n$ y $A\in\mathbb{R}^{n \times n}$ nos queda:
+\begin{displaymath}
+ n \times mults + O(A^{t}v) = n \times mults + (n(n \times mults + (n-1) \times sums))  
+\end{displaymath}
+lo que nos deja con:
+\begin{displaymath}
+ O(n) + nO(n) = O(n^2)
+\end{displaymath}
+reemplazando en la complejidad del método 2 obtenemos que:
+\begin{displaymath}
+ O(metodo2) = O(metodo1) + O(despejar) = O(n^2) + O(n^2) = O(n^2)
+\end{displaymath}
+Concluimos que el método 1 y el método 2 tienen la misma complejidad $O(n^2)$ tomando a $n$ como el tamaño de la matriz $A$ de entrada.
+Como habíamos analizado en el comienzo el tamaño de la matriz $A$ que recibie cada uno es diferente. Para el método 1 es $n = pixels(img)$ y
+para el método 2 es $n = nimgp \times \#personas$. Por lo tanto cuál de los dos cueste menos va a depender de la relación entre la resolución
+de las imágenes de nuestra base de entrenamiento y la cantidad de imágenes que tenemos en total. En nuestro caso particular la resolución de las
+imágenes excede ampliamente a la cantidad de imágenes. Nuestra base de entrenamiento tiene $410$ fotos y en general usamos una resolución
+de $112 \times 92 = 10304$. Por lo tanto: 
+\begin{displaymath}
+ nimgp \times \#personas << pixels(img) \Rightarrow O(metodo2) << O(metodo1)
 \end{displaymath}
 
-Si $A\in\mathbb{R}^{m \times n}$ y $x\in\mathbb{R}^n$ entonces:
 
-\begin{displaymath}
-  O(Ax) = m(n \times mult + (n-1) \times sums) = (mn)\times mult + m(n-1)\times sums = O(mn)
-\end{displaymath}
 
-Si $y\in
+
+

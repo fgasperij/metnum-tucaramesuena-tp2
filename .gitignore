@@ -22,3 +22,8 @@
 
 # Python
 *.pyc
+
+# Latex mess
+*.aux
+*.tex~
+*.tex.backup
