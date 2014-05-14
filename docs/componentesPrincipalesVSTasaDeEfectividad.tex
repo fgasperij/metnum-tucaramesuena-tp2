@@ -1,11 +1,12 @@
 \subsubsection{Cantidad de componentes princiaples vs tasa de efectividad}
 El objetivo de la siguiente experimentación es analizar cómo afecta el número de componentes principales utilizado a la tasa de efectividad
-que obtenemos al identificar sujeto. Cuantas más componentes principales tomamos más información tenemos. Sin embargo, los autovalores que tomamos
-son siempre los de mayor valor absoluto, es decir, los que más información reflejan. Por lo tanto es de esperar que cada componente principal que agregamos
-nos aporta menos información que el anterior. Además, el método de la potencia con deflación arrastra error, esto implica que la exactitud de los autovalores 
-obtenidos es cada vez menor $exactitud(\lambda_i) > exactitud(\lambda_{i+1}$.
-Para la experimentación vamos a mantener la cantidad de sujetos, $40$, y la resolución de las imágenes, $112 \times 92$, constantes. El análisis lo vamos
-a realizar considerando componentes hasta 45 partiendo de una sola y aumentando de a 3. Los tests se correrán tomando $nimgp = 3, 6, 9$ caras de entrenamiento. Para cada
-combinación de $k$ y $nimgp$
-sujetos a identificar = restantes
-10 al azar por cada componente principal y después tomo el promedio
+que obtenemos al identificar fotos. Cuantas más componentes principales tomamos más información tenemos. Sin embargo, los $k$ calculamos
+autovalores que tomamos son los $k$ de mayor valor absoluto, es decir, los que más información reflejan. Por lo tanto es de esperar que 
+cada componente principal que agregamos nos aporte menos información que la anterior. Es decir, que la tasa de efectividad aumente junto con la 
+cantidad de componentes principales utilizadas pero a una velocidad sublineal. Además, sabemos que el método de la potencia con deflación arrastra 
+error, esto implica que la exactitud de los autovalores obtenidos es cada vez menor $exactitud(\lambda_i) > exactitud(\lambda_{i+1}$.
+Para la experimentación vamos a mantener la cantidad de sujetos, $40$, y la resolución de las imágenes, $112 \times 92$, constantes. 
+El análisis lo vamos a realizar considerando hasta 45 componentes principales. Los tests se correrán tomando $nimgp = 3, 6, 9$ caras de 
+entrenamiento. Para cada combinación de $k$ y $nimgp$ corremos el test 10 veces, tomando al azar las fotos de la base de entrenamiento y las 
+utilizadas para identificación. Calculamos la tasa de efectividad para los 10 y nos quedamos con el promedio. Vamos a intentar identificar
+a todas las fotos restantes de la base para poder tener más casos.
