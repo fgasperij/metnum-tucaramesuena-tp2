@@ -6,4 +6,52 @@ Por lo tanto tenemos que $AA^t\in\mathbb{R}^{n \times n}$ y $A^tA\in\mathbb{R}^{
 En el \'unico punto que divergen los algoritmos es en el c\'alculo de los $k$ mayores autovalores, y sus
 autovectores asociados, de $M_x = A^tA$, la matriz de covarianza. 
 El m\'etodo 1 aplica el m\'etodo de la potencia con deflaci\'on directamente sobre la matriz $M_x$. 
-El m\'etodo 2 primero aplica el m\'etodo de la potencia sobre la matriz $M^t_x = AA^t$. Luego
+El m\'etodo 2 primero aplica el m\'etodo de la potencia sobre la matriz $M^t_x = AA^t$ y después realiza un despeje para obtener los 
+autovalores y autovectores de $M_x$. 
+Por lo tanto tenemos que los dos métodos utilizan la misma función para calcular autovectores y autovalores:
+\begin{algorithm}
+\caption{calcularAutovaloresYAutovectores(Matriz $A$)}
+\label{pseudo:calcularAutovaloresYAutovectores}
+\begin{algorithmic}
+\FOR {$i = 1$ hasta $k$}
+  \STATE [$v_i$, $\lambda_i$] = metodoDeLaPotencia($A$)
+  \STATE $A$ = deflacionar($A$, $v_i$, $\lambda_i$)
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+y el método 2 además utiliza una función para despejar
+
+\begin{algorithm}
+\caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
+\label{pseudo:despejar}
+\begin{algorithmic}
+  \STATE $u$ = $v\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}$   
+\end{algorithmic}
+\end{algorithm}
+
+por lo tanto la complejidad del método 1 es (abusando de la notación asintótica):
+
+\begin{displaymath}
+  O(m1) = k (O(metodoDeLaPotencia) + O(deflacionar))
+\end{displaymath}
+
+y del método 2:
+
+\begin{displaymath}
+  O(m1) = k (O(metodoDeLaPotencia) + O(deflacionar)) + k O(despejar)
+\end{displaymath}
+
+La complejidad del método de la potencia es:
+
+\begin{displaymath}
+  O(m1) = iter (O(Ax) + O(\frac{y}{{\parallel}y{\parallel}}))
+\end{displaymath}
+
+Si $A\in\mathbb{R}^{m \times n}$ y $x\in\mathbb{R}^n$ entonces:
+
+\begin{displaymath}
+  O(Ax) = m(n \times mult + (n-1) \times sums) = (mn)\times mult + m(n-1)\times sums = O(mn)
+\end{displaymath}
+
+Si $y\in

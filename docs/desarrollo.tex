@@ -6,7 +6,55 @@
 %y realizadas las mediciones experimentales. Los ensayos fallidos, hipótesis y conjeturas
 %equivocadas, experimentos y métodos malogrados deben figurar en esta sección, con
 %una breve explicación de los motivos de estas fallas (en caso de ser conocidas).
-El principal cálculo del análisis de las componentes principales es el correspondiente a hallar los autovalores de mayor módulo y sus autovectores asociados. El mismo se realiza con el método de la potencia que encuentra el autovalor de mayor módulo y luego se combina con la técnica de deflación [AGREGAR CITA - BURDEN] para ir encontrando el resto de los autovalores iterativamente. Este método tiene dos inconvenienttes, el primero es que requiere un vector inicial que debe cumplir ciertas condiciones que no se pueden conocer de antemano, por suerte, la probabilidad de elegir tal clase de vector es muy baja por lo que puede omitirse. En segundo lugar, hay que estudiar el error y la velocidad de convergencia para deducir el valor óptimo de la cantidad de iteraciones del algoritmo, es decir un valor númericamente aceptable que no induzca a errores. en un tiempo no prohibitivo. Por otro lado, la técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error de cálculo mayor  que los primeros, limitando la cantidad de autovalores (y en consecuencia componentes principales) a calcular. De todas maneras esto tampoco es un problema grave, ya que la idea de las componentes principales es hallar un número reducido de las mismas (las mas importantes).
+La implementación consta de 2 fases. Primero está la fase de entrenamiento:
+\begin{enumerate}
+ \item se obtiene la matriz $I\in\mathbb{R}^{n \times m}$ a partir de todas las imágenes de la base de entrenamiento. Para $i = 1,...,n$, llamamos $x_i$ a
+ la i-ésima fila de $I$ que se corresponde con la i-ésima imagen de nuestra base vectorizada por filas. Cada posición de $x_i$ se 
+ corresponde con un pixel de la imagen a la cual corresponde. Además, sabemos que $n = nimgp * \#sujetos$, siendo $nimgp$ la cantidad de imágenes
+ que tengo por cada sujeto y $\#sujetos$ la cantidad de sujetos distintos a los que pertencen las imágenes de mi base de entrenamiento, y 
+ $m = alto * ancho$, siendo $alto$ y $ancho$ los respectivos anchos y altos de las imágenes medidos en pixeles.
+ 
+ \item se calcular la matriz $A$ a partir de la matriz $I$. Sus dimensiones son iguales. Obtenemos el vector $\mu = (x_1+...+x_n)/n$ que es 
+ el promedio de las imágenes. Para calcular $A$, en primer lugar restamos a cada una de las filas de $I$ el vector $\mu$. Obtenemos $I'$ que contiene en la
+ i-ésima fila al vector $(x_i - \mu)^t$. En segundo lugar obtenemos $A$ como: $A = I' * \sqrt{n-1}$.
+ 
+ \item calculamos la matriz de covarianzas $M_x = A^t*A$.
+ 
+ \item aplicamos el método de la potencia con deflación $k$ veces sobre la matriz $M_x$. $k$ es el número de componentes principales que nos 
+ interesa obtener. Conseguimos una matriz $B\in\mathbb{R}^{m \times k}$ cuya columna $b_i$ se corresponde con el autovector $a_i$ de la matriz
+ $M_x$ asociado al autovalor $\lambda_i$ tal que $\lambda_1 < lambda_2 < ... < lambda_k \leq lambda_{k+1} \leq ... \leq lambda_m$. Esto es así
+ por que el método de la potencia, si encuentra un autovalor, es el de mayor módulo. \cite[1]{burden}.
+ 
+ \item aplicamos la transformación característica a todas las imágenes de nuestra base de entrenamiento. La transformación característica
+ de $x_i$ está dada por \begin{displaymath}
+			    tc(x_i) = ({b_1^t}x_i, {b_2^t}x_i,..., {b_k^t}x_i)\in\mathbb{R}^k
+                        \end{displaymath}
+
+\end{enumerate}
+
+y luego está la fase de identificación en la que recibimos una nueva imagen e identificamos a qué sujeto pertenece:
+\begin{enumerate}
+ \item recibimos la imagen y la vectorizamos por filas de la misma forma que lo hicimos con las imágenes en nuestra base de entrenamiento
+ en la primera fase y obtenemos $x_{identificar}$.
+ 
+ \item calculamos su transformación característica de la misma manera que lo hicimos en la fase de entrenamiento y con la misma matriz $B$
+  \begin{displaymath}
+			    tc(x_{identificar}) = ({b_1^t}x_{identificar}, {b_2^t}x_{identificar},..., {b_k^t}x_{identificar})\in\mathbb{R}^k
+  \end{displaymath}
+ 
+ \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describiremos más abajo.
+
+\end{enumerate}
+Dichos autovalores son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de menor 
+módulo 
+contienente menos información y por lo tanto es más confiable descartalos sin perder efectividad al identificar las caras.
+\newline
+El método de la potencia arrastra error al calcular un nuevo autovalor, por lo que no resulta práctico utilizarlo para calcular muchos. Sin embargo,
+en este caso en particular solo tomamos los $k$ mayores.
+\newline
+Elegimos como vector inicial para el método de la potencia $b_0 = (1,...,1)$. 
+La técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error de cálculo 
+mayor  que los primeros. De todas maneras esto tampoco es un problema grave, ya que la idea de las componentes principales es hallar un número reducido de las mismas.
 
 \input{alternativo}
 \input{tests}
