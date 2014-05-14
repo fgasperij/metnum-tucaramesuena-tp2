@@ -42,7 +42,7 @@ y luego está la fase de identificación en la que recibimos una nueva imagen e 
 			    tc(x_{identificar}) = ({b_1^t}x_{identificar}, {b_2^t}x_{identificar},..., {b_k^t}x_{identificar})\in\mathbb{R}^k
   \end{displaymath}
  
- \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describiremos más abajo.
+ \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describimos más adelante.
 
 \end{enumerate}
 Los métodos que implementamos para decidir a qué sujeto pertenece una imagen luego de haber calculado su transformación
@@ -57,16 +57,9 @@ característica son los siguientes:
   a la transformación característica de la nueva imagen.
 \end{description}
 
-Dichos autovalores son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de menor 
-módulo 
-contienente menos información y por lo tanto es más confiable descartalos sin perder efectividad al identificar las caras.
-\newline
-El método de la potencia arrastra error al calcular un nuevo autovalor, por lo que no resulta práctico utilizarlo para calcular muchos. Sin embargo,
-en este caso en particular solo tomamos los $k$ mayores.
-\newline
-Elegimos como vector inicial para el método de la potencia $b_0 = (1,...,1)$. 
-La técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error de cálculo 
-mayor  que los primeros. De todas maneras esto tampoco es un problema grave, ya que la idea de las componentes principales es hallar un número reducido de las mismas.
+Elegimos como vector inicial para el método de la potencia $b_0 = (1,...,1)$. La técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error de cálculo 
+mayor que los primeros. Este problema es mitigado por el hecho de que sólo tomamos los $k$ mayores pero de todas formas probablemente quede 
+reflejado en la experimentación.
 
 \input{alternativo}
 \input{comparacionMetodos}
