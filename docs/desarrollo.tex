@@ -45,7 +45,17 @@ y luego está la fase de identificación en la que recibimos una nueva imagen e 
  \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describiremos más abajo.
 
 \end{enumerate}
-
+Los métodos que implementamos para decidir a qué sujeto pertenece una imagen luego de haber calculado su transformación
+característica son los siguientes:
+\begin{description}
+  \item[Distancia mínima] calculamos la distancia entre la transformación característica de la imagen que queremos identificar
+  y todas las imágenes de nuestra base. Decidimos que la imagen nueva corresponde al sujeto al cual pertenece la imagen cuya transformación
+  característica es la más cercana a la transformación característica de la nueva imagen. Es decir, con el de distancia mínima.
+  \item[Distancia mínima al promedio] calculamos el promedio de las distancias entre la transformación característica de la imagen que 
+  queremos identificar y las imágenes de cada uno de nuestros sujetos. De esta forma obtenemos una distancia promedio a los diferentes sujetos.
+  Finalmente, decidimos que la imagen nueva corresponde al sujeto al cual pertenece el promedio de distancias más cercano 
+  a la transformación característica de la nueva imagen.
+\end{description}
 
 Dichos autovalores son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de menor 
 módulo 
@@ -60,4 +70,5 @@ mayor  que los primeros. De todas maneras esto tampoco es un problema grave, ya 
 
 \input{alternativo}
 \input{comparacionMetodos}
+\input{algoritmos}
 \input{tests}

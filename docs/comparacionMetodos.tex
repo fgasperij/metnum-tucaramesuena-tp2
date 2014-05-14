@@ -9,7 +9,6 @@ El m\'etodo 1 aplica el m\'etodo de la potencia con deflaci\'on directamente sob
 El m\'etodo 2 primero aplica el m\'etodo de la potencia sobre la matriz $M^t_x = AA^t$ y después realiza un despeje para obtener los 
 autovalores y autovectores de $M_x$. 
 Por lo tanto tenemos que los dos métodos utilizan la misma función para calcular autovectores y autovalores:
-\newpage
 \begin{algorithm}
 \caption{calcularAutovaloresYAutovectores(Matriz $A$)}
 \label{pseudo:calcularAutovaloresYAutovectores}
@@ -20,15 +19,8 @@ Por lo tanto tenemos que los dos métodos utilizan la misma función para calcul
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-y el método 2 además utiliza una función para despejar:
-\begin{algorithm}
-\caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
-\label{pseudo:despejar}
-\begin{algorithmic}
-  \STATE $u$ = $v\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}$   
-\end{algorithmic}
-\end{algorithm}
-por lo tanto la complejidad del método 1 es (abusando de la notación asintótica):
+y el método 2 además utiliza una función para despejar cuyo pseudo-código podemos encontrar en la sección algoritmos. Por lo tanto, 
+la complejidad del método 1 es (abusando de la notación asintótica):
 \begin{displaymath}
   O(metodo1) = k (O(metodoDeLaPotencia) + O(deflacionar))
 \end{displaymath}
