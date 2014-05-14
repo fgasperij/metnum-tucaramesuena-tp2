@@ -5,12 +5,49 @@
 %por ejemplo la de matriz simétrica). En vez de definiciones básicas es conveniente citar
 %ejemplos de bibliografía adecuada. Una cita vale más que mil palabras.
 %
-El objetivo principal de este trabajo es implementar un método que nos permita identificar personas en tiempo real aplicando el 
-análisis de componentes principales, conocido como PCA por sus siglas en inglés (Principal Component Analysis).\newline
-Partimos de una base de datos de fotos, cada una asociada a un sujeto en particular. El objetivo es recibir una foto, que puede o no pertenecer a la base original, e identificar a qué sujeto pertenece.
+El objetivo principal de este trabajo es implementar un método que nos permita identificar personas casi en tiempo real aplicando el 
+análisis de componentes principales, conocido como PCA por sus siglas en inglés (Principal Component Analysis).
+Partimos de una base de datos de fotos, cada una asociada a un sujeto en particular y el objetivo es recibir una foto, que 
+puede o no pertenecer a la base original, e identificar a qué sujeto pertenece.
 \par
 Se utilizó el enfoque propuesto en ``Eigenfaces for recognition'' \cite{eigenfaces}. El mismo propone trabajar
 con las fotografías en 2 dimensiones sin reconstrucción geométrica de la tercera contando con un conjunto inicial -que 
 llamaremos de entrenamiento- de imágenes pertenecientes al universo de rostros que se pretende reconocer. El enfoque propone trabajar 
 con una transformación de ese espacio que permita reducir su dimensionalidad considerablemente sin perder la capacidad de distinguir 
 a los elementos que viven en él.
+\par
+Para $i = 1,...,n$ sea $x_i\in\mathbb{R}^m$ la i-ésima imagen de nuestra base de datos almacenada por filas en un vector. Vamos a restarle 
+a cada uno de nuestros $x_i$ el vector $\mu = (x_1+...+x_n)/n$ para que tengan media igual cero. De esta forma construimos la matriz $X$ que
+tiene en la i-ésima fila al vector $(x_i-\mu)^t$. Queremos extraer las direcciones que más información nos provean sobre cada una de estas 
+imágenes, las direcciones que más las caracterizan. Para conseguirlo intentaremos conseguir una transformación de los datos que disminuya su 
+redundancia, es decir, que disminuya la covarianza entre ellos. Entonces construimos la matriz de covarianza $M_x$:
+\begin{displaymath}
+ M_x = \frac{1}{n-1}\hat{X^t}\hat{X}
+\end{displaymath}
+Esta matriz tiene la varianza de cada variable, en nuestro caso los pixeles de las imágenes, en la diagonal y la covarianza entre 
+ellos en las restantes posiciones. Usaremos como transformación a un cambio de base apropiado:
+\begin{displaymath}
+ \hat{X^t} = PX^t
+\end{displaymath}
+para obtenerlo diagonalizaremos la matriz de covarianza valiéndonos de que es simétrica y esto implica que es diagonalizable en la forma 
+$M_x = PDP^{-1}$ donde $D$ es una matriz diagonal.  Luego, al diagonalizar, buscamos variables que tengan covarianza cero entre sí y la 
+mayor varianza posible. Si aplicamos nuestro cambio de base a $M_x$ nos queda:
+\begin{displaymath}
+ M_x = \frac{1}{n-1}\hat{X^t}\hat{X} = \frac{1}{n-1}(P\hat{X^t})(P\hat{X}) = PM_xP^t
+\end{displaymath}
+Como $M_x$ es simétrica existe $V$ ortogonal tal que $M_x = VD{V^t}$:
+\begin{displaymath}
+ M_x = PM_xP^t = P(VD{V^t})P^t = ({V^t}V)D(V{V^t}) = D
+\end{displaymath}
+habiendo tomado $P = V^t$. De esta forma vemos como las columnas $v_j$ de la matriz $V$ son los autovectores de $M_x$. Éstas van a ser
+las componentes principales de nuestros datos, la base de imágenes de entrenamiento. En la práctica, en caso de que la dimensión 
+de $M_x$ sea muy grande, es posible tomar sólo un subconjunto de las componentes principales, aquellas que capturen mayor proporción
+de la varianza de los datos.
+\par
+De esta forma queda definida nuestra transformación característica por la aplicación del cambio de base a cada una de nuestras imágenes:
+\begin{displaymath}
+ tc(x_i) = \bar{V}^{t}x_i = (v_1^{t}x_i,...,v_k^{t}x_i)
+\end{displaymath}
+
+
+

@@ -6,6 +6,9 @@
 %y realizadas las mediciones experimentales. Los ensayos fallidos, hipótesis y conjeturas
 %equivocadas, experimentos y métodos malogrados deben figurar en esta sección, con
 %una breve explicación de los motivos de estas fallas (en caso de ser conocidas).
+
+
+
 La implementación consta de 2 fases. Primero está la fase de entrenamiento:
 \begin{enumerate}
  \item se obtiene la matriz $I\in\mathbb{R}^{n \times m}$ a partir de todas las imágenes de la base de entrenamiento. Para $i = 1,...,n$, llamamos $x_i$ a
@@ -45,6 +48,8 @@ y luego está la fase de identificación en la que recibimos una nueva imagen e 
  \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describiremos más abajo.
 
 \end{enumerate}
+
+
 Dichos autovalores son necesarios ya que al reducir el espacio, naturalmente se pierde información, EXPLICAR MEJOR ESTO: los autovalores de menor 
 módulo 
 contienente menos información y por lo tanto es más confiable descartalos sin perder efectividad al identificar las caras.
