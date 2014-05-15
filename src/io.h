@@ -1,22 +1,20 @@
 #ifndef IO_H
 #define IO_H
 
+/*** E/S. Entrada y salida del Tp. ***/
+
 #include "defines.h"
-#include "fstream"
 #include <limits>
-#include <string>
-#include <sstream>
-#include <string>
+#include <iostream>
+#include <fstream>
 #include <string.h>
-#include <stdlib.h>
-#include <chrono>
 #include "Matriz.h"
 
-#define LONG_PGM 4
 
 // Funciones de entrada salida pare leer y escribir datos en archivos.
 // Siempre tratar de usar >> para eliminar los espacios.
 
+// Setear precision de salida para punto flotante.
 void setearPrecision(ostream& os, int prec)
 {
 	os.setf(ios::fixed, ios::floatfield);
@@ -52,7 +50,8 @@ void obtenerHastaCaracter(ifstream& ifs, char * buffer, char c)
 	ifs.get(buffer, std::numeric_limits<std::streamsize>::max(), c);	
 }
 
-// Lectura de archivo PGM. Asumo P5.
+// Lectura de archivo PGM. Asumo P5. Calculo tamanio total archivo.
+// Cargo al buffer desde la posicion del archivo tamanio_archivo - tamanio_imagen.
 void leerPGM(const char*  file, int tamanio, char * buffer){
 
 	ifstream file_se( file, ios::binary | ios::ate);
@@ -76,17 +75,18 @@ void escribirPGM(const char*  file, Data& data, char * buffer){
 }
 
 
-//Lee los datos basios del archivo. La primer linea.
+// Lee los datos basios del archivo. La primer linea.
 void leerDatosBasicos(const char* file, Data& data){
 
 	ifstream file_s; file_s.open(file);
 
-	// Cuento los caracteres del nombre de la carpeta donde estan las imagenes, 
-	// creo un buffer con ese tamanio, y lo copio a data.
+	// Cuento los caracteres del nombre de la carpeta donde estan las imagenes. 
+	// Creo un buffer con ese tamanio, y lo copio a data.
 	int long_base = contarCaracteres(file_s);
 	char buffer[long_base];
 	obtenerHastaCaracter(file_s, buffer, ESPACIO);
 	data.base = string(buffer);
+
 	// Copio datos basicos.
 	file_s >> data.alto >> data.ancho >> data.personas >> data.imagenes >> data.componentes;
 
@@ -98,18 +98,17 @@ void leerDatosBasicos(const char* file, Data& data){
 	file_s.close();    
 }
 
-//Lee el resto
+// Carga al buffer la imagen de persona.
 void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, char* buffer){
 
 	ifstream file_s; file_s.open(file);
+
 	// Voy hasta la persona en cuestion
 	ignorarLineas(file_s, persona+1);
 
 	// Obtengo la subcarpeta donde se encuntran las imagenes de la persona	
 	int long_subfolder = contarCaracteres(file_s);
-
 	char buff_subf[long_subfolder];
-
 	obtenerHastaCaracter(file_s, buff_subf, ESPACIO);
 
 	// Numero de la imagen, voy tomando todos hasta llegar al correcto.
@@ -131,13 +130,15 @@ void leerDatosAvanzados(const char*  file, Data& data, int persona, int imagen, 
 
 	// Leo el archivo y lo paso al buffer.
 	leerPGM(file_img, data.ancho*data.alto, buffer);
+
 	file_s.close();
 }
 
 
 //Lee el resto
 int leerDatosTests(const char*  file, Data& data,  int imagen, char * buffer){
-ifstream file_s; file_s.open(file);
+
+	ifstream file_s; file_s.open(file);
 
 	// Ignoro todo hasta llegar a la linea a testear.
 	ignorarLineas(file_s, data.personas+2+imagen);
@@ -147,17 +148,77 @@ ifstream file_s; file_s.open(file);
 	char buff_test[long_test];
 	obtenerHastaCaracter(file_s, buff_test, ESPACIO);
 	
-	//La copio al buffer.
+	// La copio al buffer.
 	leerPGM(buff_test, data.ancho*data.alto, buffer);
 
-	int sujeto;
-	// Paso los datos a test.  
+	// Numero de sujeto
+	int sujeto; 
 	file_s >> sujeto;
+
 	file_s.close();
 	return sujeto;
 }
 
-// Escribe los resultados en archivo de salida.
+//**** ESCRITURA de Matrices ****////
+// Escribir columna j de matriz A a stream.
+template<class T>
+void escribirColumnaS(ostream& os, Matriz<T>& A, int j){
+	int cantFilas = A.cantFilas();
+	setearPrecision(os, PRECISION);
+	for(int i = 0; i < cantFilas; i++){
+	    os << A[i][j];
+	    if(i != cantFilas - 1 ){os << " ";}
+	}
+}
+
+// Escribir columna j de matriz A a archivo.
+template<class T>
+void escribirColumna(const char* file, Matriz<T>& A, int j){
+	ofstream file_s; file_s.open(file);
+	escribirFilaS(file_s, A, j);
+	file_s.close();
+}
+
+// Escribir fila i de matriz A a stream.
+template<class T>
+void escribirFilaS(ostream& os, Matriz<T>& A, int i){
+	int cantColumnas = A.cantColumnas();
+	setearPrecision(os, PRECISION);
+	for(int j = 0; j < cantColumnas; j++){
+	    os << A[i][j];
+	    if(j != cantColumnas - 1 ){os << " ";}
+	}
+}
+
+// Escribir fila i de matriz A a archivo.
+template<class T>
+void escribirFila(const char* file, Matriz<T>& A, int i){
+	ofstream file_s; file_s.open(file);
+	escribirFilaS(file_s, A, i);
+	file_s.close();
+}
+
+// Escribir matriz en stream.
+template<class T>
+void escribirMatrizS(ostream& os, Matriz<T>& A){
+	int cantFilas = A.cantFilas();
+	setearPrecision(os, PRECISION);
+	for(int i = 0; i < cantFilas; i++){
+		escribirFilaS(os, A, i);
+		if(i != cantFilas - 1 ){os << endl;}
+	}
+}
+
+// Escribir matriz en archivo.
+template<class T>
+void escribirMatriz(const char*  file, Matriz<T>& A){
+	ofstream file_s; file_s.open(file);
+	escribirMatrizS(file_s, A);
+	file_s.close();
+}
+
+//**** ESCRITURA de Vector's ****////
+// Escribir vector en stream.
 template<class T>
 void escribirVectorS(ofstream& os, const vector<T>& b, int modo = VERT){
 	setearPrecision(os, PRECISION);
@@ -172,7 +233,7 @@ void escribirVectorS(ofstream& os, const vector<T>& b, int modo = VERT){
 	}
 }
 	
-
+// Escribir vector en archivo.
 template<class T>
 void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 	ofstream file_s; file_s.open(file, fstream::app);
@@ -181,57 +242,8 @@ void escribirVector(const char*  file, const vector<T>& b, int modo = VERT){
 	file_s.close();
 }
 
-template<class T>
-void escribirColumnaS(ostream& os, Matriz<T>& A, int j){
-	int cantFilas = A.cantFilas();
-	setearPrecision(os, PRECISION);
-	for(int i = 0; i < cantFilas; i++){
-	    os << A[i][j];
-	    if(i != cantFilas - 1 ){os << " ";}
-	}
-}
-
-template<class T>
-void escribirColumna(const char* file, Matriz<T>& A, int j){
-	ofstream file_s; file_s.open(file);
-	escribirFilaS(file_s, A, j);
-	file_s.close();
-}
-
-template<class T>
-void escribirFilaS(ostream& os, Matriz<T>& A, int i){
-	int cantColumnas = A.cantColumnas();
-	setearPrecision(os, PRECISION);
-	for(int j = 0; j < cantColumnas; j++){
-	    os << A[i][j];
-	    if(j != cantColumnas - 1 ){os << " ";}
-	}
-}
-
-template<class T>
-void escribirFila(const char* file, Matriz<T>& A, int i){
-	ofstream file_s; file_s.open(file);
-	escribirFilaS(file_s, A, i);
-	file_s.close();
-}
-
-template<class T>
-void escribirMatrizS(ostream& os, Matriz<T>& A){
-	int cantFilas = A.cantFilas();
-	setearPrecision(os, PRECISION);
-	for(int i = 0; i < cantFilas; i++){
-		escribirFilaS(os, A, i);
-		if(i != cantFilas - 1 ){os << endl;}
-	}
-}
-
-template<class T>
-void escribirMatriz(const char*  file, Matriz<T>& A){
-	ofstream file_s; file_s.open(file);
-	escribirMatrizS(file_s, A);
-	file_s.close();
-}
-
+//**** LECTURA de Vector's ****////
+// Leer vector desde archivo.
 template<class T>
 void leerVector(const char*  file, vector<T>& b){
 	ifstream file_s; file_s.open(file);
@@ -242,6 +254,8 @@ void leerVector(const char*  file, vector<T>& b){
 	file_s.close();
 }
 
+//**** LECTURA de Matrices ****////
+// Lectura matriz desde stream.
 template<class T>
 void leerMatrizS(ifstream& is, Matriz<T>& A){
 	int cantFilas = A.cantFilas(); int cantColumnas = A.cantColumnas();
@@ -253,7 +267,7 @@ void leerMatrizS(ifstream& is, Matriz<T>& A){
 	}
 }
 
-
+// Lectura matriz desde archivo.
 template<class T>
 void leerMatriz(const char*  file, Matriz<T>& A){
 	ifstream file_s; file_s.open(file);

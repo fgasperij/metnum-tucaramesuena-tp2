@@ -1,6 +1,8 @@
 #ifndef DEFINES_H_
 #define DEFINES_H_
 
+/*** DEFINICIONES BASICAS ***/
+
 #include <vector>
 
 using namespace std;
@@ -52,24 +54,41 @@ struct Data{
 };
 
 
-
+// Precicion decimal para la salida
 #define PRECISION 6
+
+/*** Definiciones para io.h ***/
 
 #define VERT 0
 #define HORIZ 1
 
-#define FILA 0
-#define COLUMNA 1
-
+// Caracteres
 #define ENTER '\n'
 #define ESPACIO ' '
 
 #define GRAYSCALE 255
 
+// Extension .pgm
+const char pgm[5] = ".pgm";
+#define LONG_PGM 4
+
+/*** Definiciones para misc.h y main ***/
+
+#define FILA 0
+#define COLUMNA 1
+
+// Cantidad iteraciones metodo de la potencia
 #define PITER 300
 
+// Metodos de identificacion, por distancia minima o promedio
+#define MET_MIN 0
+#define MET_PROM 1
 
-const char pgm[5] = ".pgm";
+// Metodos de tipo matriz, normal o alternativo
+#define MET_NORM 0
+#define MET_ALT 1
+
+
 
 
 #endif

@@ -33,6 +33,7 @@ void msg_modo_uso()
 	std::cout << "\n\t<archivo entrada> corresponde al archivo con los training sets y las caras para reconocer" << std::endl;
 	std::cout << "\n\t<archivo salida> corresponde al archivo con los resultados del reconocimiento" << std::endl;
 	std::cout << "\n\t<m> = 1 | 0 corresponde a la estrategia utilizada" << std::endl;
+	std::cout << "\n\t<ident> = 1 | 0 corresponde a la identificación con promedio o con mínimo. Opcional" << std::endl;
 	std::cout<<ENDCOLOR;
 }
 

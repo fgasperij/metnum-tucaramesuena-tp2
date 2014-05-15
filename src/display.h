@@ -2,7 +2,6 @@
 #define DISPLAY_H
 
 #include <iostream>
-#include <vector>
 #include "Matriz.h"
 #include "defines.h"
 #include "io.h"

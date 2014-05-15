@@ -1,16 +1,18 @@
 #!/bin/bash
 
-#Modo de uso= ./tests.sh [-q Q] [-k K] [-i IMPS] [-b BASE] [-m MET] [-p P]
+#Modo de uso= ./tests.sh [-q Q] [-k K] [-i IMPS] [-b BASE] [-m MET] [-p P] [-c] [h]
 # K = Cantidad de components.
 # IMPs = Imagenes por persona.
 # Q = Cantidad de tests.
 # BASE = Base de imagenes: 0 = 112x92 ** 1 = 28x23. Default = 0
 # MET = Metodo: 0 = Lento, 1 = Rapido.
 # P = Cantidad de personas
+# h = Ayuda.
+# c = limpiar.
 
 #Valores default:
 cantTests=10
-componentes=20
+componentes=15
 personas=41
 imps=5
 imgGrande=0
@@ -29,6 +31,7 @@ rm -f tests/*.out
 rm -f tests/*.in
 rm -f results.out
 
+# Chequeo y obtencion de parmetros.
 while getopts  "q:k:i:b:m:p:hc" arg
 do
 	case $arg in
@@ -58,7 +61,7 @@ do
 			;;
 		b)
 			base=$OPTARG
-			if [ $base -ne 0 ] || [ $base -ne 1 ]
+			if [ $base -le -1 ] || [ $base -ge 2 ]
 			then
 				echo Base no valida
 				exit
@@ -66,9 +69,9 @@ do
 			;;
 		m)
 			met=$OPTARG
-			if [ $met -ne 0 ] || [ $base -ne 1 ]
+			if [ $met -le -1 ] || [ $base -ge 2 ]
 			then
-				echo Metodo no valida
+				echo Metodo no valido
 				exit
 			fi
 			;;
@@ -96,12 +99,13 @@ do
 			echo "MET = Metodo: 0 = Lento, 1 = Rapido. Default = Rapido"
 			echo "P = Cantidad de personas. Default = 41"
 			echo "c = Limpiar archivos."
+			echo "h = Ayuda."
 			exit
 			;;
 	esac
 done
 
-
+# Creo los nuevos tests.
 printf "Creando nuevos tests "
 for ((i=1; i < $cantTests+1; i++))
 do
@@ -110,7 +114,6 @@ do
 done
 
 echo
-
 
 #Corro los tests
 for((i=1; i < $cantTests+1; i++))
@@ -122,6 +125,7 @@ done
 tt=0
 ttic=0
 ta=0
+
 # Calculo promedios
 while read line           
 do           

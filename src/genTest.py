@@ -28,16 +28,20 @@ def main(arg = argv):
 	start_ipp = 0
 	end_ipp = 9
 
+	# Semulla
 	if(args.s != None):
 		seed(args.s)
 
+	# Comienzo y final del random para las personas
 	start_pers = 0
 	end_pers = 40
 
+	# Parametros
 	imps = args.imps;
 	componentes = args.k;
 	personas = args.p;
 	
+	# Tamanio de la base y path
 	m = 0
 	n = 0
 	path = ""
@@ -50,6 +54,7 @@ def main(arg = argv):
 		n = 23
 		path = "../data/ImagenesCarasRed/"
 
+	# Escribo parametros iniciales
 	f = open(args.o, 'w')
 	f.write(  path )
 	f.write(" ")
@@ -65,21 +70,29 @@ def main(arg = argv):
 	f.write("\n")
 
 	# Matriz[i][j] = La foto j de la persona i se encuentra agregada si es igual a 1, 0 sino.
+	# El ultimo j indicia si la persona tiene imagenes.
 	# Debe haber una forma mas pythonica de hacerlo, pero ya vengo embalado con las matrices.
 	Matriz = [[0 for x in range(end_ipp+2)] for x in range(end_pers+1)]
-	#Orden relativo de las personas.
+
+	# Orden relativo de las personas.
 	orden = [0 for x in range(end_pers+1)]
 
+	# Tomo personas random.
 	for j in range( personas ):
 	
 		pers = randint(start_pers, end_pers)
+		
+		# Hasta que no halle una persona nueva.
 		while(Matriz[pers][end_ipp+1] == 1):
 			pers = randint(start_pers, end_pers)
 		
+		# Actualizo el orden y escribo los parametros.
 		orden[pers] = j+1
 		f.write("s")
 		f.write(str(pers+1))
 		f.write("/")
+
+		# Lo mismo que para las personas pero con las imagenes.
 		for i in range(imps):
 			img = randint(start_ipp, end_ipp)
 			while(Matriz[pers][img] == 1):	
@@ -91,6 +104,7 @@ def main(arg = argv):
 
 		f.write("\n")
 
+		# Agrego a la persona
 		Matriz[pers][end_ipp+1] = 1
 	
 	

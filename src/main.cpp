@@ -5,10 +5,7 @@
  * ***/
 
 #include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <cstdlib>
-//#include <math.h>
+#include <fstream>
 #include "defines.h"
 #include "util.h"
 #include "Matriz.h"
@@ -37,7 +34,7 @@ int main(int argc, char **argv)
 		return -1;		
 	}
 	
-	if (argc!=4){
+	if (argc !=4 && argc != 5){
 		msg_parseo_falla("Cantidad insuficiente de argumentos.");
 		std::cout<<std::endl<<"argc "<<argc<<std::endl;
 		return -1;		
@@ -46,6 +43,15 @@ int main(int argc, char **argv)
 	std::string input_filename(argv[1]);
 	std::string output_filename(argv[2]);
 	std::string metodo=argv[3];
+	int met_ident = MET_MIN;
+	if(argc == 5){
+		met_ident = atoi(argv[4]);
+		if(met_ident != MET_MIN || met_ident != MET_PROM){
+			msg_parseo_falla("Cuarto parámetro invalido");
+		}
+		return -1;
+	}
+	
 
 	if (toStr(argv[3])!="0" && toStr(argv[3])!="1"){
 		msg_parseo_falla("Tercer parámetro inválido.");
@@ -64,92 +70,88 @@ int main(int argc, char **argv)
 		return -1;		
 	}
 
-/*** Face Recognition ***/
 
-	
-	// ESTADO ACTUAL:
-	
-	// Entrada/Salida -- IMPLEMENTADO -- OK
-
-	// Armado de matriz -- IMPLEMENTADO -- OK
-
-	// Calcular (o no, depende del método?) A'*A (matriz de covarianzas)  -- IMPLEMENTADO -- OK
-
-	// Metodo Potencia y Deflacion --- IMPLEMENTADO -- OK 
-	// Observacion: La correctitud de los resultados depende de la cantidad de 
-	// iteraciones.
-
-	// Metodo alternativo -- IMPLEMENTADO -- OK
-		
-	// Calcular Transformación Característica (TC) --- IMPLEMENTADO - OK
-	
-	// Aplicar TC a imágenes para clasificar - Método de clasificación --- IMPLEMENTADO - OK
-
-	// Identificar sujetos --- IMPLEMENTADO -- OK
-
-	char* file_in = argv[1]; char* file_out = argv[2];
-	int metod = atoi(argv[3]);
+	char* file_in = argv[1]; char* file_out = argv[2];	//Archivos .in y .out
+	int metod = atoi(argv[3]);	// Metodo a usar
 
 	Data data;
+
+	// Leo los parametros basicos del archivo.
 	leerDatosBasicos(file_in, data);
+
+	// Cantidad de filas
 	int n = data.personas*data.imagenes;
+
+	// Cantidad de columnas
 	int m = data.alto*data.ancho;
+	// Creo matriz a llenar
 	Matriz<double> A (n, m);
-	int count = 0;
 
 	// Buffer con new, el tamaño del buffer no cambia una vez calculado el tamanio.
 	char * buffer = new char [m];
-	if(buffer == NULL){cerr << "Puntero del buffer nulo " << endl; return -1;}
+	if(buffer == NULL){cerr << "Puntero del buffer para imagenes nulo " << endl; return -1;}
 
 	// Leo todos las imagenes de todas las personas y armo la matriz X del enunciado.
+	int count = 0;
 	for(int i = 0; i < data.personas; i++){
 		for(int j = 0; j < data.imagenes; j++){
+			// Leo imagen j+1 de la persona i+1.
 			leerDatosAvanzados(file_in, data, i, j, buffer);
-			armarMatrizX(A, buffer, count);	//Agrego una fila con las muestras			
+			// Agrego la fila count con las muestras.
+			armarMatrizX(A, buffer, count);				
 			count++;
 		}
 	}
 
-	// Armo A del enunciado.
-
-	Matriz<double> media = armarMatrizA(A);
-
+	// Tiempo de computo de la matriz (sin contar E/S)
 	double tt = 0;
+
+	// Armo A del enunciado. De paso devuelvo el vector con las medias por que se usa mas adelante.
+
+	init_time();
+	Matriz<double> media = armarMatrizA(A);
+	tt += get_time();
+
+	// Estructura que contendra autovalores y autovectores.
 	Autos<double> autos;
-	if(metod == 0){
+	
+	// Obs: Comentarios puede usar notacion tipo MATLAB a conveniencia.
+	if(metod == MET_NORM){
+
 		// At = A'
 		Matriz<double> At = A;
 		At.transponer();
+
 		// P = A'*A
 		Matriz<double> P = At*A;
-		// CALCULO DE TIEMPO
-		init_time();
+
 		// Calculo autovectores (o componentes principales) y autovalores. 
 		// La V del enunciado.
+		init_time();
 		autos = calcularAuto(P, data.componentes);
 		tt += get_time();
+
 	} else {
+
 		// At = A'
 		Matriz<double> At = A;
-
 		At.transponer();
+
 		// P = A'*A
 		Matriz<double> P = A*At;
-		// CALCULO DE TIEMPO
-		init_time();
 
 		// Calculo autovectores (o componentes principales) y autovalores. La V del enunciado.
-		// En el metodo alternativo hay que hacer un par de cuentas para hallas los autovectores. Los autovalores son los mismos.
-
+		// En el metodo alternativo hay que multiplicar los autovectores por A' y multiplicar por un escalar.
+		init_time();
 		autos = calcularAuto(P, data.componentes);
 		autos.autovectores = At*autos.autovectores;
-		tt += get_time();
 		for(int j = 0; j < data.componentes; j++){
 			double landa = autos.autovalores[0][j];
 			for(int i = 0; i < m; i++){
 				autos.autovectores[i][j] = autos.autovectores[i][j]*(sqrt(landa)/landa);
 			}
 		}
+		tt += get_time();
 	}
 
 	// Aplico transfo caracteristica a todas las muestras.
@@ -159,29 +161,34 @@ int main(int argc, char **argv)
 
 	// Hay que restar la media.
 	media * (-1);
+
+	// En principio no hay fallos
 	int fallos = 0;
+
+	// Tiempo de identifiacion
 	double ttic = 0;
+	
+	// Identifico a todos los sujetos
 	for(int i = 0; i < data.tests; i++){
 
-		// Vectorizo la imagen
+		// Leo imagen y vectorizo. Obtengo numero de sujeto relativo.
 		int sujeto = leerDatosTests(file_in, data, i, buffer);
+
 		Matriz<double> IMG (1, m);
 		cargarMatriz(IMG, buffer);	
 
-		// CALCULO DE TIEMPO
+		// Resto la media y multiplico por escalar.
 		init_time();
-		// Calculo algunas cosas...
-		// Le resto la media.
 		IMG + media;
-
 		IMG*((double) 1/sqrt((n-1)));
 
 		// Aplico transformacion caracteristica a la imagen.
 		Matriz<double> TCIMG = transfCaract(IMG, autos.autovectores);
 
-		// Identificando... segun el paper.
-		// int identificado = identificarCara(TC, TCIMG, data);
-		int identificado = identificarCaraConPromedio(TC, TCIMG, data);
+		// Identificando segun los metodos
+		int identificado;
+		if(met_ident == MET_MIN){identificado = identificarCara(TC, TCIMG, data);}
+		else{identificado = identificarCaraConPromedio(TC, TCIMG, data);}
 
 		ttic += get_time();
 
@@ -191,31 +198,36 @@ int main(int argc, char **argv)
 			//cout << "Test " << i << " sujeto " << sujeto << " bien identificado" << endl;
 		} else {
 			//cout << "Test " << i << " sujeto " << sujeto << " mal identificado" << ", se obtuvo " << identificado << endl; 
-			fallos++;
+			fallos++;	// Sumo un fallo
 		}
 
 	}
+
+	// Tiempo de identifiacion por imagen
 	ttic /= data.tests;
-	cout << "Aciertos: " << data.tests - fallos << endl << "Fallos: "  << fallos << endl;
+	
+	//cout << "Aciertos: " << data.tests - fallos << endl << "Fallos: "  << fallos << endl;
 
 	// Escribo los valores singulares en el archivo de salida.
 	Matriz<double> vs (data.componentes, 1);
 	for(int i = 0; i < vs.cantFilas(); i++){
 		vs[i][0] = sqrt(autos.autovalores[0][i]);
 	}
-
-
 	escribirMatriz(file_out, vs);
-	int aciertos = data.tests - fallos;
-//	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
-//	cout << "Tiempo total de identifiación cara: " << ttic << endl;
-	ofstream file_s; file_s.open("results.out", ofstream::app);
-	// file_s << tt << " " << ttic <<  " " << (double ( (double) aciertos/ (double) data.tests)) << endl;
-	file_s << (double ( (double) aciertos/ (double) data.tests)) << endl;
-	file_s.close();
 
+	//*** COSAS DE TESTS ****////
+//	int aciertos = data.tests - fallos;
+//	cout << "Tiempo total de calculos preeliminares: " << tt << endl;
+//	cout << "Tiempo total de identificación cara: " << ttic << endl;
+//	ofstream file_s; file_s.open("results.out", ofstream::app);
+//	file_s << tt << " " << ttic <<  " " << (double ( (double) aciertos/ (double) data.tests)) << endl;
+//	file_s.close();
+	//*** FIN COSAS DE TESTS ****////
+
+	// Borro el buffer como corresponde
 	delete[] buffer;
 	
 	msg_footer();
+
 	return 0;
 }
