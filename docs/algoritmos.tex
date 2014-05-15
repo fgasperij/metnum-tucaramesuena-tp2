@@ -1,7 +1,7 @@
 \subsection{Algoritmos}
 
 % MÉTODO DE LA POTENCIA
-\begin{algorithm}
+\begin{algorithm}[!h]
 \caption{metodoDeLaPotencia(Matriz $A$, Vector $v$, Int $iter$)}
 \label{pseudo:metodoDeLaPotencia}
 \begin{algorithmic}
@@ -12,7 +12,7 @@
 \end{algorithmic}
 \end{algorithm}
 % DEFLACIÓN
-\begin{algorithm}
+\begin{algorithm}[!h]
 \caption{deflacionar(Matriz $A$, Vector $autovector$, Double $\lambda$)}
 \label{pseudo:deflacionar}
 \begin{algorithmic}
@@ -20,8 +20,16 @@
   \STATE $B = A - \lambda V$
 \end{algorithmic}
 \end{algorithm}
+% DESPEJE DE LOS AUTOS DE AtA TENIENDO LOS DE AAt
+\begin{algorithm}[!h]
+\caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
+\label{pseudo:despejar}
+\begin{algorithmic}
+  \STATE $u$ = $v\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}$   
+\end{algorithmic}
+\end{algorithm}
 % IDENTIFICAR CARA - DISTANCIA MÍNIMA
-\begin{algorithm}
+\begin{algorithm}[!h]
 \caption{identificarDistanciaMinima(Vector $tc_{nueva}$, Matriz $TC$)}
 \label{pseudo:identificarDistanciMinima}
 \begin{algorithmic}
@@ -39,7 +47,7 @@
 \end{algorithmic}
 \end{algorithm}
 % IDENTIFICAR CARA - DISTANCIA EN PROMEDIO MÍNIMA
-\begin{algorithm}
+\begin{algorithm}[!h]
 \caption{identificarDistanciaPromedioMinima(Vector $tc_{nueva}$, Matriz $TC$, Int $iSujetos$, Int $nimgp$)}
 \label{pseudo:identificarDistanciaPromedioMinima}
 \begin{algorithmic}
@@ -56,11 +64,4 @@
   \STATE $sujeto$ = min($aDist$)
 \end{algorithmic}
 \end{algorithm}
-% DESPEJE DE LOS AUTOS DE AtA TENIENDO LOS DE AAt
-\begin{algorithm}
-\caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
-\label{pseudo:despejar}
-\begin{algorithmic}
-  \STATE $u$ = $v\frac{ \sqrt{\lambda_{i} } }{ \lambda_{i} }  A^{t}$   
-\end{algorithmic}
-\end{algorithm}
+\FloatBarrier
