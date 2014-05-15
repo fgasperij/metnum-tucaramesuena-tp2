@@ -1,16 +1,17 @@
 \subsubsection{nimgp vs Tasa de efectividad}
-En la siguiente experimentación queremos analizar cómo afecta a la efectividad la cantidad de imágenes que tomamos por sujeto, $nimgp$, para la base
-de entrenamiento a la tasa de efectividad. La base total con la que contamos contiene 41 sujetos y 10 fotos por cada uno de ellos. Es una base que
-consideramos pequeña por lo cual vamos a intentar abarcar la mayor cantidad de combinaciones posibles de $nimgp$ y las fotos que tomamos de
-entrenamiento con las de test.
-¿Cómo vamos a variar las variables?
-¿Qué esperamos obtener?
-¿Por qué es interesante realizar este test?
-¿Qué desventajas tenemos con la base dada?
-
-personas = 40
-sujetos a identificar = restantes
-resolución = 112x92
-componentes= 15, 30, 45
-20 al azar por cada cantidad de caras y después tomo el promedio
-caras que tomo por persona=1,9
+En la siguiente experimentación analizaremos cómo afecta a la tasa de efectividad la cantidad de imágenes que tomamos por sujeto, $nimgp$, 
+para la base de entrenamiento a la tasa de efectividad. Nos interesa realizar este test porque tiene una relevancia grande en la práctica:
+conocer qué valor $nimgp$ necesito como mínimo para poder alcanzar una tasa de efectividad aceptable para el contexto en el que lo aplique.
+\par
+La base total con la que contamos contiene 41 sujetos y 10 fotos por cada uno de ellos. 
+La consideramos pequeña por lo cual vamos a intentar abarcar la mayor cantidad de combinaciones posibles entre $nimgp$, las fotos que tomamos 
+de entrenamiento y las que tomamos para identificar test. Es por eso que vamos a tomar todos los $nimgp$ posibles, $nimgp = 1,..,9$, y para cada
+uno de ellos vamos a correr 20 veces los tests eligiendo aleatoriamente las imágenes que pertenecen al conjunto de entrenamiento y las
+que vamos a utilizar para la fase de identificación para luego quedarnos con el promedio de las tasas de efectividad.
+El número de sujetos va a ser $40$, vamos a identificar todas las fotos que no pertenezcan a la base de entrenamiento, la resolución la
+mantenemos en $112 \times 92$. El otro valor que variaremos para evaluar si afecta a la tasa obtenida para cada $nimgp$ es la cantidad de +
+componentes principales, tomaremos $k = 15, 30, 45$.
+\par
+Esperamos que al tomar $nimgp$ mayores la tasa de efectividad aumente ya que estamos curbriendo más casos del rostro. Al cubrir un mayor
+espectro de posibilidades del rostro estamos acotando la probabilidad de que la cara que nos presenten sea suficientemente distinta
+como para que no podamos identificarla correctamente.
