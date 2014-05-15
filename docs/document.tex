@@ -11,7 +11,6 @@
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{subcaption}
-
 \usepackage{lscape} 
 
 %El siguiente paquete permite escribir la caratula facilmente
@@ -25,8 +24,6 @@
   urlcolor=black 
 }
 
-
-
 \newlength{\AnchoEncabezados}\setlength{\AnchoEncabezados}{6em}
 \newcommand{\EncabezadoInline}[2]{
     
@@ -35,14 +32,11 @@
         \parbox{\AnchoEncabezados}{\textbf{#1}}#2%
 }
 
-
-
 \newcommand{\Encabezado}[2]{%
     \par\EncabezadoInline{#1}{#2}\par%
 }
 
 \newcommand{\funcion}[2]{\textbf{#1}{#2}\BlankLine}
-
 
 %\newcommand{\myFuncion}[3]{
 %	\begin{algorithm}[H][H]
@@ -58,13 +52,8 @@
    
 %Datos para la caratula
 \materia{Métodos Numéricos}
-
 \titulo{TP 2 - Tu cara me suena...}
-
-%\fecha{DDDD dd de MMMM, AAAA}
-
 \grupo{Grupo 2}
-
 \integrante{Franco Bartalotta}{}{franco.bartalotta@hotmail.com}
 \integrante{Fernando Gasperi Jabalera}{56/09}{fgasperijabalera@gmail.com}
 \integrante{Ana Sarri\'es}{144/02}{abarloventos@gmail.com}
@@ -72,14 +61,11 @@
 \resumen{En este trabajo práctico, desarrollamos un método para el reconocimiento de caras basado en el enfoque de \textit{eigenfaces}. Para ello, manipulamos la base de imágenes de entrenamiento matricialmente; obteniendo las componentes principales (autovectores) de su matriz de covarianzas a través del método de la potencia con deflación. Exploramos algunos métodos de clasificación, su tasa de efectividad y su relación con posibles variaciones en el conjunto inicial de entrenamiento.}
 \claves{Face Recognition, Componentes Principales, SVD}
 
-\begin{document}
- 
- %esto construye la caratula
- \maketitle
- \tableofcontents
+\begin{document}  
+\maketitle
+\tableofcontents
 
 \newpage
-
 \input{intro.tex}
 \newpage
 \input{desarrollo.tex}
@@ -93,7 +79,4 @@
 \input{apendices.tex}
 \newpage
 \input{referencias.tex}
-
-
-
 \end{document}

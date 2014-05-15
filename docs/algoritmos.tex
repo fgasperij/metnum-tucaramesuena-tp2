@@ -25,16 +25,41 @@
 
 % IDENTIFICAR CARA - DISTANCIA MÍNIMA
 \begin{algorithm}
-\caption{identificarDistanciMinima(Matriz $B$, Vector $x$, Double $\lambda$)}
+\caption{identificarDistanciMinima(Vector $tc_{nueva}$, Matriz $TC$)}
 \label{pseudo:identificarDistanciMinima}
 \begin{algorithmic}
-  \STATE $V = vv^t$
-  \STATE $B = A - \lambda V$
+  \FOR {$i=1$ hasta $\#filas(TC)$}
+    \STATE $tc_{base}$ = $fila(i, TC)$
+    \STATE $diff$ = $tc_{nueva}$ - $tc_{base}$
+    \STATE $dist$ = $norm(diff)$
+    \IF{ $i == 1$ }
+      \STATE $minimo$ = $dist$
+    \ENDIF
+    \IF{ $dist < minimo$ }
+      \STATE $minimo$ = $dist$
+    \ENDIF    
+  \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
 % IDENTIFICAR CARA - DISTANCIA EN PROMEDIO MÍNIMA
-
+\begin{algorithm}
+\caption{identificarDistanciPromedioMinima(Vector $tc_{nueva}$, Matriz $TC$, Int $iSujetos$, Int $nimgp$)}
+\label{pseudo:identificarDistanciaPromedioMinima}
+\begin{algorithmic}
+  \FOR {$i=1$ hasta $iSujetos$}
+    \STATE $acum$ = $0$
+    \FOR {$j=1$ hasta $nimgp$}    
+      \STATE $tc_{base}$ = $fila(nimgp*i+j, TC)$
+      \STATE $diff$ = $tc_{nueva}$ - $tc_{base}$
+      \STATE $acum$ += $norm(diff)$      
+    \ENDFOR
+    \STATE $iDistanciaPromedio$ = $\frac{acum}{nimgp}$
+    \STATE agregar($iDistanciaPromedio$, $aDist$)
+  \ENDFOR
+  \STATE $sujeto$ = min($aDist$)
+\end{algorithmic}
+\end{algorithm}
 
 % DESPEJE DE LOS AUTOS DE AtA TENIENDO LOS DE AAt
 
