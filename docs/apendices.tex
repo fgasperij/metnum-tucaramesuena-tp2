@@ -7,4 +7,39 @@
 %rotulados con las letras mayusculas del alfabeto romano. Por ejemplo: la demostración
 %de una propiedad que aplican para optimizar el algoritmo que programaron para resolver
 %un problema.
+\subsection{Descripción formal del enfoque de \textit{Eigenfaces for Recognition}}
+\label{demo-formal-intro}
+Formalmente, partimos de n imágenes (almacenada por filas en un vector) que notamos $x_i\in\mathbb{R}^m$ con $i = 1,...,n$. A cada uno de nuestros $x_i$ le restamos el vector $\mu = (x_1+...+x_n)/n$ para que tengan media igual cero. De esta forma construimos la matriz $X$ que
+tiene en la i-ésima fila al vector $(x_i-\mu)^t$.  A partir de ésta, podemos construir la siguiente matriz $M_x$:
+\begin{displaymath}
+ M_x = \frac{1}{n-1}\hat{X^t}\hat{X}
+\end{displaymath}
+Esta matriz tiene la varianza de cada variable, que en nuestro caso son los pixeles de las imágenes, en la diagonal, y la covarianza entre ellos en las restantes posiciones, por lo que nos referimos a ella como la matriz de covarianzas. Esta matriz resulta ser simétrica y un teorema nos garantiza que toda matriz simétrica es diagonalizable en la forma $M_x = PDP^{-1}$ donde $D$ es una matriz diagonal.
+Al diagonalizar, estamos buscamos variables que tengan covarianza cero entre sí y la 
+mayor varianza posible. Si aplicamos como transformación un cambio de base apropiado:
+\begin{displaymath}
+ \hat{X^t} = PX^t
+\end{displaymath}
+$M_x$ nos queda:
+\begin{displaymath}
+ M_x = \frac{1}{n-1}\hat{X^t}\hat{X} = \frac{1}{n-1}(P\hat{X^t})(P\hat{X}) = PM_xP^t
+\end{displaymath}
+Como $M_x$ es simétrica existe $V$ ortogonal tal que $M_x = VD{V^t}$:
+\begin{displaymath}
+ M_x = PM_xP^t = P(VD{V^t})P^t = ({V^t}V)D(V{V^t}) = D
+\end{displaymath}
+habiendo tomado $P = V^t$. De esta forma vemos como las columnas $v_j$ de la matriz $V$ son los autovectores de $M_x$. Éstas van a ser
+las componentes principales de nuestros datos, la base de imágenes de entrenamiento. En la práctica, en caso de que la dimensión 
+de $M_x$ sea muy grande, es posible tomar sólo un subconjunto de las componentes principales, aquellas que capturen mayor proporción
+de la varianza de los datos.
+\par
+De esta forma queda definida nuestra transformación característica por la aplicación del cambio de base a cada una de nuestras imágenes:
+\begin{displaymath}
+ tc(x_i) = \bar{V}^{t}x_i = (v_1^{t}x_i,...,v_k^{t}x_i)
+\end{displaymath}
+Ésta misma transformación característica se la aplicaremos a las imágenes que queramos identificar para evaluar a qué sujeto pertenecen.
+
+\newpage
+\subsection{Enunciado de la Cátedra}
+\input{enunciado/tp2.tex}
 

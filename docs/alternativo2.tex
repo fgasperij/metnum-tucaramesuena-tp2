@@ -1,0 +1,27 @@
+\subsection{Elección conveniente de la matriz de covarianzas para imágenes grandes}
+\label{metodoalternativo}
+El método alternativo consiste en utilizar la matriz $A.A^t$ en lugar de la matriz $A^tA$ a la hora de calcular los autovectores de la transformación característica. 
+\par
+Esto resulta posible, si advertimos que ambas matrices poseen los mismos autovalores. Veamos la demostración:
+\par
+Sea $u_{i}$ autovector de $A.A^{t}$ asociado a $\lambda_{i}$, entonces tenemos que:
+\begin{displaymath}
+  (A.A^{t}).u_{i} = \lambda_{i}.u_{i},  
+\end{displaymath}
+\par
+multiplicando por $A^{t}$ a ambos lados de la igualdad, resulta:
+\begin{displaymath}
+  A^{t}.(A.A^{t}).u_{i} = A^{t}\lambda_{i}.u_{i},  
+\end{displaymath}
+
+que por propiedad de matrices y escalares, resulta:
+\begin{displaymath}
+ (A^{t}.A).(A^{t}.u_{i}) = \lambda_{i}.(A^{t}.u_{i}),  
+\end{displaymath}
+Y observando esta última igualdad, notamos que llamando $v_{i}$ a $A^{t}.u_{i}$ entonces $v_{i}$ resulta autovector de $A^{t}.A$ asociado a $\lambda_{i}$.
+\par
+De lo anterior, se desprende que todo autovalor de $A.A^{t}$ también lo es de $A^{t}.A$ (y tomando $A=A^{t}$ obtendríamos la vuelta). Este resultado nos permite elegir el producto de matrices que viva en un espacio de menor dimensión, y calcular sobre él, el método de la potencia, sabiendo que hallaremos los mismos autovalores.
+\par
+Además, la última línea de la demostración también nos indica cuál será el método para calcular el autovector asociado: $v_{i}=A^{t}.u_{i}$.
+
+
