@@ -1,12 +1,35 @@
 % MÉTODO DE LA POTENCIA
-
+\begin{algorithm}
+\caption{metodoDeLaPotencia(Matriz $A$, Vector $v$, Int $iter$)}
+\label{pseudo:metodoDeLaPotencia}
+\begin{algorithmic}
+  \FOR {$i=1$ hasta $iter$}
+    \STATE $y = Ax$
+    \STATE $x = \frac{y}{\parallel y \parallel}$
+  \ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 
 % DEFLACIÓN
-
+\begin{algorithm}
+\caption{deflacionar(Matriz $A$, Vector $autovector$, Double $\lambda$)}
+\label{pseudo:deflacionar}
+\begin{algorithmic}
+  \STATE $V = vv^t$
+  \STATE $B = A - \lambda V$
+\end{algorithmic}
+\end{algorithm}
 
 % IDENTIFICAR CARA - DISTANCIA MÍNIMA
-
+\begin{algorithm}
+\caption{deflacionar(Matriz $B$, Vector $x$, Double $\lambda$)}
+\label{pseudo:deflacionar}
+\begin{algorithmic}
+  \STATE $V = vv^t$
+  \STATE $B = A - \lambda V$
+\end{algorithmic}
+\end{algorithm}
 
 % IDENTIFICAR CARA - DISTANCIA EN PROMEDIO MÍNIMA
 
