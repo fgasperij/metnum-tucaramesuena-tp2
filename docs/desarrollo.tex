@@ -6,6 +6,7 @@
 %y realizadas las mediciones experimentales. Los ensayos fallidos, hipótesis y conjeturas
 %equivocadas, experimentos y métodos malogrados deben figurar en esta sección, con
 %una breve explicación de los motivos de estas fallas (en caso de ser conocidas).
+\subsection{La implementación y algunas decisiones de diseño}
 La implementación consta de 2 fases. Primero está la fase de entrenamiento:
 \begin{enumerate}
  \item se obtiene la matriz $I\in\mathbb{R}^{n \times m}$ a partir de todas las imágenes de la base de entrenamiento. Para $i = 1,...,n$, llamamos $x_i$ a
@@ -18,7 +19,7 @@ La implementación consta de 2 fases. Primero está la fase de entrenamiento:
  el promedio de las imágenes. Para calcular $A$, en primer lugar restamos a cada una de las filas de $I$ el vector $\mu$. Obtenemos $I'$ que contiene en la
  i-ésima fila al vector $(x_i - \mu)^t$. En segundo lugar obtenemos $A$ como: $A = I' * \sqrt{n-1}$.
  
- \item calculamos la matriz de covarianzas $M_x = A^t*A$.
+ \item calculamos la matriz de covarianzas $M_x = A^t*A$. (Para este punto y el siguiente efectuamos un análisis alternativo que se puede ver en \ref{metodoalternativo})
  
  \item aplicamos el método de la potencia con deflación $k$ veces sobre la matriz $M_x$. $k$ es el número de componentes principales que nos 
  interesa obtener. Conseguimos una matriz $B\in\mathbb{R}^{m \times k}$ cuya columna $b_i$ se corresponde con el autovector $a_i$ de la matriz
@@ -61,7 +62,8 @@ Elegimos como vector inicial para el método de la potencia $b_0 = (1,...,1)$. L
 mayor que los primeros. Este problema es mitigado por el hecho de que sólo tomamos los $k$ mayores pero de todas formas probablemente quede 
 reflejado en la experimentación.
 
-\input{alternativo}
+%\input{alternativo}
+\input{alternativo2}
 \input{comparacionMetodos}
 \input{algoritmos}
 \input{tests}
