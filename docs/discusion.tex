@@ -6,9 +6,40 @@
 %tados interesantes y los casos “patológicos” encontrados.
 
 \subsection{Análisis de resultados de tasa de efectividad en functión de las componentes principales}
+Se ve claramente como la tasa de efectividad aumenta al incrementarse el número de componentes principales utilizadas. Éste es un comportamiento
+que esperábamos. Sin embargo, nos sorprende cuán rápido disminuye la velocidad a la que crece la tasa de efectividad. Para $k = 12$ podemos ver
+que ya alcanzamos un $90\%$ de la tasa de efectividad total que conseguimos hasta donde alcanzaron nuestros tests, $k = 45$. Incrementar las 
+componentes principales a partir de ese momento logra aumentar la tasa de efectividad sólo un $10\%$ más. Éste comportamiento interpretamos
+que se debe a que las primeras 12 componentes principales sintetizan el $90\%$ de la información. Se desprende de dicha interpretación
+el grado de importancia que tiene calcular los autovalores en orden descendente por magnitud de su módulo. A nivel práctico podemos aconsejar
+que a menos que los requerimientos sobre la tasa de efectividad sean muy demandantes basta con tomar unas pocas componentes principales
+para lograr una buena tasa de efectividad.
+\par
+Finalmente, podemos observar que la forma de las 3 curvas es prácticamente igual, simplemente sufren un desplazamiento sobre el eje
+vertical. Esto nos lleva a intuir que tomar mayores $nimgp$ nos provee una mayor tasa de efectividad sin necesidad de aumentar el $k$ que
+utilizamos.
 
-%\input{discuComponentesPrincipalesVSTasaDeEfectividad}
-%\input{discuCompCantPers}
-%\input{discuNimgpVsTasaDeEfectividad}
-%\input{discuDistanciaMinimaVsDistanciaPromedio}
+\subsection{Análisis de la tasa de eficiencia en función de la cantidad de personas}
+
+\subsection{Análisis de la tasa de efectividad en función de $nimgp$}
+Lo primero que nos llama la atención de estos resultados es la gran diferencia que devuelve en la tasa de efectividad que se obtuvo
+tomando $nimgp = 1$ y variando $k = 15, 30, 45$. No estamos seguros a qué se debe este comportamiento. Intuimos que como sólo se toma
+una foto por sujeto para la base de entrenamiento los resultados dependen mucho de la foto que se toma. Se intentó reducir este tipo
+de ruido realizando varias veces el mismo test con seleccionando aleatoriamente las imágenes y aparentemente no tuvimos éxito para
+el caso más sensible.
+\par
+Se puede apreciar claramente como la tasa de efectividad aumenta a medida que incrementamos $nimgp$, comportamiento que predijimos, sin embargo,
+no nos esperábamos que luego de cierto umbral la tasa de efectividad comience a decrecer. Sin tener en cuenta el caso $nimgp = 1$, vemos 
+claramente que la curva sigue una forma de parábola abriéndose hacia abajo, alcandando su máximo en $nimgp = 6$. No estamos seguros
+a qué se debe el decrecimiento que sufre la tasa de efectividad para valores $nimgp > 6$.
+
+\subsection{Análisis de comparación de los métodos de identificación}
+Vemos que las curvas tienen la misma forma que en la primera experimentación, lo cual nos dice que los dos métodos de identificación
+se comportan de la misma forma ante la variación de la cantidad de componentes principales utilizadas. Además, se comportan de la misma
+forma ante los cambios en $nimgp$ ya que las 3 curvas aparecen una sobre la otra en el mismo orden en los dos gráficos. Sin embargo, 
+podemos ver que para el método de identificación por distancia mínima las curvas roja y amarilla, correspondientes a $nimgp = 6$ y $nimgp = 9$
+respectivamente, a partir de $k = 10$ obtienen tasas de efectividad superiores a $0.8$. En cambio, para el método de distancia promedio mínima
+a penas superan la tasa de efectividad $0.8$. Concluimos que el método de identificación por distancia mínima alcanza una mayor tasa de 
+efectividad utilizando la misma cantidad de componentes principales y valores de $nimgp$. Sugerimos utilizar éste método para cualquier
+aplicación práctica por sobre el de distancia promedio mínima.
 
