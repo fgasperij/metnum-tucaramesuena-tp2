@@ -23,7 +23,7 @@ La implementación consta de 2 fases. Primero está la fase de entrenamiento:
  
  \item aplicamos el método de la potencia con deflación $k$ veces sobre la matriz $M_x$. $k$ es el número de componentes principales que nos 
  interesa obtener. Conseguimos una matriz $B\in\mathbb{R}^{m \times k}$ cuya columna $b_i$ se corresponde con el autovector $a_i$ de la matriz
- $M_x$ asociado al autovalor $\lambda_i$ tal que $\lambda_1 < lambda_2 < ... < lambda_k \leq lambda_{k+1} \leq ... \leq lambda_m$. Esto es así
+ $M_x$ asociado al autovalor $\lambda_i$ tal que $\lambda_1 < \lambda_2 < ... < \lambda_k \leq \lambda_{k+1} \leq ... \leq \lambda_m$. Esto es así
  por que el método de la potencia, si encuentra un autovalor, es el de mayor módulo. \cite{burden}.
  
  \item aplicamos la transformación característica a todas las imágenes de nuestra base de entrenamiento. La transformación característica

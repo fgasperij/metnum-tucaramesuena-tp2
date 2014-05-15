@@ -11,8 +11,6 @@
   \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-
-
 % DEFLACIÓN
 \begin{algorithm}
 \caption{deflacionar(Matriz $A$, Vector $autovector$, Double $\lambda$)}
@@ -22,10 +20,9 @@
   \STATE $B = A - \lambda V$
 \end{algorithmic}
 \end{algorithm}
-
 % IDENTIFICAR CARA - DISTANCIA MÍNIMA
 \begin{algorithm}
-\caption{identificarDistanciMinima(Vector $tc_{nueva}$, Matriz $TC$)}
+\caption{identificarDistanciaMinima(Vector $tc_{nueva}$, Matriz $TC$)}
 \label{pseudo:identificarDistanciMinima}
 \begin{algorithmic}
   \FOR {$i=1$ hasta $\#filas(TC)$}
@@ -41,10 +38,9 @@
   \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-
 % IDENTIFICAR CARA - DISTANCIA EN PROMEDIO MÍNIMA
 \begin{algorithm}
-\caption{identificarDistanciPromedioMinima(Vector $tc_{nueva}$, Matriz $TC$, Int $iSujetos$, Int $nimgp$)}
+\caption{identificarDistanciaPromedioMinima(Vector $tc_{nueva}$, Matriz $TC$, Int $iSujetos$, Int $nimgp$)}
 \label{pseudo:identificarDistanciaPromedioMinima}
 \begin{algorithmic}
   \FOR {$i=1$ hasta $iSujetos$}
@@ -60,9 +56,7 @@
   \STATE $sujeto$ = min($aDist$)
 \end{algorithmic}
 \end{algorithm}
-
 % DESPEJE DE LOS AUTOS DE AtA TENIENDO LOS DE AAt
-
 \begin{algorithm}
 \caption{despejar(Matriz $A$, Vector $v$, Double $\lambda$)}
 \label{pseudo:despejar}
