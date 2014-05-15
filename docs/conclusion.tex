@@ -3,4 +3,19 @@
 %las relaciones de la discusión sobre las que se tiene certeza, junto con comentarios
 %y observaciones generales aplicables a todo el proceso. Mencionar también posibles
 %extensiones a los métodos, experimentos que hayan quedado pendientes, etc.
-
+La aplicación de PCA ha demostrado ser una decisión acertada. Su poder quedó claro en la primera experimentación, tasa de efectividad en
+función de las componentes principales, cuando tomando las componentes de mayor valor absoluto nos bastó con tomar menos de un $0,2\%$ de las
+mismas para obtener hasta un $80\%$ de efectividad.
+\par 
+No pudimos apreciar cómo se comporta el arrastre de error de la deflación integrada al método de la potencia. Una experimentación posibles
+para analizarlo sería ver qué pasa al aumentar el número de componenetes principales que se utiliza hasta valores cercanos al máximo posible.
+La resolución de las imágenes debería ser reducida ya que de lo contrario el tiempo de ejecución puede llegar a valores poco prácticos.
+\par
+El método de la potencia con deflación se mostró práctico y útil, ya que con tan solo 300 iteraciones pudimos compensar en buena medida
+el arrastre de error producido por la deflación. Esto lo intuimos a partir de que la tasa de efectividad al aumentar la cantidad de 
+componentes principales en siempre continuó creciendo. Es decir, el error arrastrado fue compensado minimizado lo suficiente por 
+la precisión obtenida con el método de la potencia como para no perturbar el crecimiento de la tasa de efectividad.
+\par
+Por último, nos gustaría destacar un detalle que nos resultó muy interesante, la elección de la matriz de covarianza. La diferencia 
+abismal en complejidad que puede introducir dependiendo el contexto elegir una u otra forma de plantear los sistemas nos dejó una 
+fuerte impresión. Nos agrada mucho ver el gran impacto que pueden tener en la práctica los contenidos teóricos desarrollados en la materia.

@@ -11,9 +11,12 @@ que esperábamos. Sin embargo, nos sorprende cuán rápido disminuye la velocida
 que ya alcanzamos un $90\%$ de la tasa de efectividad total que conseguimos hasta donde alcanzaron nuestros tests, $k = 45$. Incrementar las 
 componentes principales a partir de ese momento logra aumentar la tasa de efectividad sólo un $10\%$ más. Éste comportamiento interpretamos
 que se debe a que las primeras 12 componentes principales sintetizan el $90\%$ de la información. Se desprende de dicha interpretación
-el grado de importancia que tiene calcular los autovalores en orden descendente por magnitud de su módulo. A nivel práctico podemos aconsejar
-que a menos que los requerimientos sobre la tasa de efectividad sean muy demandantes basta con tomar unas pocas componentes principales
-para lograr una buena tasa de efectividad.
+el grado de importancia que tiene calcular los autovalores en orden descendente por magnitud de su módulo. Si tenemos en cuenta que la matriz
+podría llegar a tener $10304$ autovalores diferentes, dada la resolución de las imágenes, las 12 componentes principales representan
+menos de un $0,2\%$ de las mismas.
+\par
+A nivel práctico podemos aconsejar que a menos que los requerimientos sobre la tasa de efectividad sean muy demandantes basta con 
+tomar unas pocas componentes principales para lograr una buena tasa de efectividad.
 \par
 Finalmente, podemos observar que la forma de las 3 curvas es prácticamente igual, simplemente sufren un desplazamiento sobre el eje
 vertical. Esto nos lleva a intuir que tomar mayores $nimgp$ nos provee una mayor tasa de efectividad sin necesidad de aumentar el $k$ que

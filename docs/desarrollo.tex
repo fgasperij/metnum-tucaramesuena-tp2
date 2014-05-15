@@ -30,9 +30,7 @@ La implementación consta de 2 fases. Primero está la fase de entrenamiento:
  de $x_i$ está dada por \begin{displaymath}
 			    tc(x_i) = ({b_1^t}x_i, {b_2^t}x_i,..., {b_k^t}x_i)\in\mathbb{R}^k
                         \end{displaymath}
-
 \end{enumerate}
-
 y luego está la fase de identificación en la que recibimos una nueva imagen e identificamos a qué sujeto pertenece:
 \begin{enumerate}
  \item recibimos la imagen y la vectorizamos por filas de la misma forma que lo hicimos con las imágenes en nuestra base de entrenamiento
@@ -44,7 +42,6 @@ y luego está la fase de identificación en la que recibimos una nueva imagen e 
   \end{displaymath}
  
  \item decidimos a cuál sujeto pertenece por alguno de los dos métodos que describimos más adelante.
-
 \end{enumerate}
 Los métodos que implementamos para decidir a qué sujeto pertenece una imagen luego de haber calculado su transformación
 característica son los siguientes:
@@ -57,10 +54,13 @@ característica son los siguientes:
   Finalmente, decidimos que la imagen nueva corresponde al sujeto al cual pertenece el promedio de distancias más cercano 
   a la transformación característica de la nueva imagen.
 \end{description}
-
-Elegimos como vector inicial para el método de la potencia $b_0 = (1,...,1)$. La técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error de cálculo 
-mayor que los primeros. Este problema es mitigado por el hecho de que sólo tomamos los $k$ mayores pero de todas formas probablemente quede 
-reflejado en la experimentación.
+Aclaramos que el método de la potencia que implementamos recibe como vector inicial $b_0 = (1,...,1)$.
+\par
+La técnica de deflación arrastra el error generado por el método de la potencia, haciendo que los últimos autovalores tengan un error 
+de cálculo mayor que los primeros. Este problema es mitigado por el hecho de que sólo tomamos los $k$ mayores pero de todas formas 
+probablemente quede reflejado en la experimentación. Además, tomamos $iter = 300$ en la implementación del método de la potencia, el
+máximo para que los tiempos de cómputo se mantuvieran en un rango aceptable, para obtener mayor precisión en el cálculo de los autovalores
+y así compensar el error arrastrado por la deflación.
 
 \input{alternativo}
 %\input{alternativo2}
