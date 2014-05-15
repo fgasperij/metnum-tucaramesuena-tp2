@@ -37,9 +37,6 @@ no nos esperábamos que luego de cierto umbral la tasa de efectividad comience a
 claramente que la curva sigue una forma de parábola abriéndose hacia abajo, alcandando su máximo en $nimgp = 6$. No estamos seguros
 a qué se debe el decrecimiento que sufre la tasa de efectividad para valores $nimgp > 6$.
 
-\subsection{Análisis de la tasa de eficiencia en función de la resolución de las imágenes}
-Los resultados obtenidos si bien no son los que se esperaban implican ciertas cuestiones interesantes. Primero, la resolución de imágenes son prácticamente idénticas para todas las condiciones por lo que se puede suponer que para ambas resoluciones la información que contienen las imágenes es suficiente y necesaria para que el análisis de componentes principales funcione de la manera esperada. Si bien nuestra suposición inicial no era correcta, es decir que a una resolución mayor se obtiene una tasa más alta, el error partió de suponer que la resolución más chica era lo suficiente mala como para arrojar peores resultados. Este percepción errónea provino de que las imágenes chicas son algo más difícil (pero no imposible con un poco de tiempo) de identificar a simple vista (con la cantidad apropiada a zoom).
-
 \subsection{Análisis de comparación de los métodos de identificación}
 Vemos que las curvas tienen la misma forma que en la primera experimentación, lo cual nos dice que los dos métodos de identificación
 se comportan de la misma forma ante la variación de la cantidad de componentes principales utilizadas. Además, se comportan de la misma
@@ -50,3 +47,10 @@ a penas superan la tasa de efectividad $0.8$. Concluimos que el método de ident
 efectividad utilizando la misma cantidad de componentes principales y valores de $nimgp$. Sugerimos utilizar éste método para cualquier
 aplicación práctica por sobre el de distancia promedio mínima.
 
+\subsection{Análisis de la tasa de eficiencia en función de la resolución de las imágenes}
+Los resultados obtenidos si bien no son los que se esperaban implican ciertas cuestiones interesantes. Primero, la resolución de imágenes 
+son prácticamente idénticas para todas las condiciones por lo que se puede suponer que para ambas resoluciones la información que contienen
+las imágenes es suficiente y necesaria para que el análisis de componentes principales funcione de la manera esperada. Si bien nuestra 
+suposición inicial no era correcta, es decir que a una resolución mayor se obtiene una tasa más alta, el error partió de suponer que la 
+resolución más chica era lo suficiente mala como para arrojar peores resultados. Este percepción errónea provino de que las imágenes chicas 
+son algo más difícil (pero no imposible con un poco de tiempo) de identificar a simple vista (con la cantidad apropiada a zoom).
